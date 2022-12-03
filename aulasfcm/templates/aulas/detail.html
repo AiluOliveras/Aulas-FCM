@@ -19,8 +19,16 @@
 
         <p><span style="font-weight:bold;">Nombre:</span> <br> {{object.nombre}}</p>
         <p><span style="font-weight:bold;">Capacidad:</span> <br> {{object.capacidad}}</p>
-        <p><span style="font-weight:bold;">Conectividad:</span> <br> {{object.conectividad}}</p>
-        <p><span style="font-weight:bold;">Proyector:</span> <br> {{object.proyector}}</p>
+        {% if object.conectividad %} <!-- Cambia True/False por Si/No-->
+            <p><span style="font-weight:bold;">Conectividad:</span> <br> Si </p>
+        {% else %}
+            <p><span style="font-weight:bold;">Conectividad:</span> <br> No </p>
+        {% endif %}
+        {% if object.proyector %}
+            <p><span style="font-weight:bold;">Proyector:</span> <br> Si </p>
+        {% else %}
+            <p><span style="font-weight:bold;">Proyector:</span> <br> No </p>
+        {% endif %}
 
         <!-- Botón para volver al Home -->
         <a href="../" type="submit" class="btn btn-primary"> < Volver </a>
