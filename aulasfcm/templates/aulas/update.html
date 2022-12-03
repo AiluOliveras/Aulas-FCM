@@ -1,0 +1,45 @@
+{% include "header.html" %}
+<html>
+
+    <head>
+        {# Cargamos libreria bootstrap #}
+        {% load bootstrap4 %}
+        {# Cargamos bootstrap css #}
+        {% bootstrap_css %}
+        {# Archivos #}
+        {% load static %}
+
+    </head>
+
+    <body>
+        {# JS y jquery bootstrap #}
+        {% bootstrap_javascript jquery='full' %}
+        {% load widget_tweaks %} <!-- Usamos esta librería para crear las cajas de texto y usar el metodo add_class -->
+        
+        <form method="post" enctype="multipart/form-data">
+            
+            <div class="form-group">
+            <label for="nombre" style="font-weight:bold;">Nombre</label>
+            {{ form.nombre|add_class:"form-control" }}
+            </div>
+            <div class="form-group">
+            <label for="capacidad" style="font-weight:bold;">Capacidad</label>
+            {{ form.capacidad|add_class:"form-control" }}
+            </div>
+            <div class="form-group">
+            <label for="conectividad" style="font-weight:bold;">Conectividad</label>
+            {{ form.conectividad|add_class:"form-control" }}
+            </div>
+            <div class="form-group">
+            <label for="proyector" style="font-weight:bold;">Proyector</label>
+            {{ form.proyector|add_class:"form-control" }}
+            </div>
+        
+            <button type="submit" class="btn btn-primary">Aceptar</button>
+            <a href="../" type="submit" class="btn btn-primary">Volver</a>
+        
+        </form>
+  
+    </body>
+
+</html>

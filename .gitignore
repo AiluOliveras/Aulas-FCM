@@ -1,0 +1,6 @@
+AulasFCM/settings.py
+*.pyc
+.envrc
+venv/
+.vscode
+calenv/

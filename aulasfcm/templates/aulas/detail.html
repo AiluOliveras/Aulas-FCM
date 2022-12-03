@@ -1,0 +1,29 @@
+{% include "header.html" %}
+<html>
+
+    <head>
+        {# Cargamos libreria bootstrap #}
+        {% load bootstrap4 %}
+        {# Cargamos bootstrap css #}
+        {% bootstrap_css %}
+        {# Archivos #}
+        {% load static %}
+
+    </head>
+
+    <body>
+        {# JS y jquery bootstrap #}
+        {% bootstrap_javascript jquery='full' %}
+
+        <h4 style="font-weight:bold;">Detalles</h4>
+
+        <p><span style="font-weight:bold;">Nombre:</span> <br> {{object.nombre}}</p>
+        <p><span style="font-weight:bold;">Capacidad:</span> <br> {{object.capacidad}}</p>
+        <p><span style="font-weight:bold;">Conectividad:</span> <br> {{object.conectividad}}</p>
+        <p><span style="font-weight:bold;">Proyector:</span> <br> {{object.proyector}}</p>
+
+        <!-- Botón para volver al Home -->
+        <a href="../" type="submit" class="btn btn-primary"> < Volver </a>
+    </body>
+
+</html>

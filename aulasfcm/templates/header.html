@@ -1,0 +1,57 @@
+<html>
+    <head>
+        {# Cargamos libreria bootstrap #}
+        {% load bootstrap4 %}
+        {# Cargamos bootstrap css #}
+        {% bootstrap_css %}
+        {# Archivos #}
+        {% load static %}
+        <!-- Cargo scripts para el dropdown de administración -->
+        <script type="javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.0/jquery.js"></script>
+        <script type="javascript" src="dist/js/bootstrap.js"></script>
+        <script type="javascript">
+            $(document).ready(function() {
+                $(".dropdown-toggle").dropdown();
+            });
+
+        </script>
+
+    </head>
+
+    <body>
+        <!-- Barra de navegacion -->
+        <nav class="navbar navbar-expand-sm navbar-light" style="background-color: #b0ccf1;">
+            <img src="{% static 'icono-fcm-gorrito-small.png' %}" style="margin-right: 7px;" alt="Logo del sistema aulas">
+            <a class="navbar-brand" href="/">Aulas FCM</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <!-- Seleccionables del header -->
+            <div class="collapse navbar-collapse" id="navbarText">
+                <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="">Calendario</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="">Consultas</a>
+                </li>
+                <li class="dropdown"> <!-- Dropdown de administracion -->
+                    <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="true"> Administración <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a style="margin-left:10;color:#4d6b93" href="/aulas">Aulas</a></li>
+                        <hr class="my-2"/> <!-- Separadores del dropdown -->
+                        <li><a style="margin-left:10;color:#4d6b93" href="#">Edificios</a></li>
+                        <hr class="my-2"/>
+                        <li><a style="margin-left:10;color:#4d6b93" href="#">Entidades</a></li>
+                        <hr class="my-2" />
+                        <li><a style="margin-left:10;color:#4d6b93" href="#">Usuarios</a></li>
+                    </ul>
+                </li>
+                </ul>
+            </div>
+            <!-- Boton para Login -->
+            <button class="btn btn-outline-dark" type="button">Iniciar sesión</button>
+        </nav>
+        <br style="line-height: 1%;"></br> <!-- Line break entre header y page -->
+    </body>
+</html>
