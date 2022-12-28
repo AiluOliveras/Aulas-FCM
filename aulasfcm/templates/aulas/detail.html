@@ -15,23 +15,27 @@
         {# JS y jquery bootstrap #}
         {% bootstrap_javascript jquery='full' %}
 
-        <h4 style="font-weight:bold;">Detalles</h4>
+        <div class="col-sm-10"> <!-- Margen izquierdo -->
 
-        <p><span style="font-weight:bold;">Nombre:</span> <br> {{object.nombre}}</p>
-        <p><span style="font-weight:bold;">Capacidad:</span> <br> {{object.capacidad}}</p>
-        {% if object.conectividad %} <!-- Cambia True/False por Si/No-->
-            <p><span style="font-weight:bold;">Conectividad:</span> <br> Si </p>
-        {% else %}
-            <p><span style="font-weight:bold;">Conectividad:</span> <br> No </p>
-        {% endif %}
-        {% if object.proyector %}
-            <p><span style="font-weight:bold;">Proyector:</span> <br> Si </p>
-        {% else %}
-            <p><span style="font-weight:bold;">Proyector:</span> <br> No </p>
-        {% endif %}
+            <h4 style="font-weight:bold;">Detalles</h4>
 
-        <!-- Botón para volver al Home -->
-        <a href="../" type="submit" class="btn btn-primary"> < Volver </a>
+            <p><span style="font-weight:bold;">Nombre:</span> <br> {{object.nombre}}</p>
+            <p><span style="font-weight:bold;">Capacidad:</span> <br> {{object.capacidad}}</p>
+            {% if object.conectividad %} <!-- Cambia True/False por Si/No-->
+                <p><span style="font-weight:bold;">Conectividad:</span> <br> Si </p>
+            {% else %}
+                <p><span style="font-weight:bold;">Conectividad:</span> <br> No </p>
+            {% endif %}
+            {% if object.proyector %}
+                <p><span style="font-weight:bold;">Proyector:</span> <br> Si </p>
+            {% else %}
+                <p><span style="font-weight:bold;">Proyector:</span> <br> No </p>
+            {% endif %}
+            <p><span style="font-weight:bold;">Edificio:</span> <br>{{ object.edificio.nombre }} ({{object.edificio.ubicacion}})</p>
+
+            <!-- Botón para volver al Home -->
+            <a href="../" type="submit" class="btn btn-primary"> < Volver </a>
+        </div>
     </body>
 
 </html>

@@ -5,3 +5,5 @@ class Aulas(models.Model):
     capacidad = models.IntegerField()
     conectividad = models.BooleanField(default=False)
     proyector = models.BooleanField(default=False)
+    
+    edificio = models.ForeignKey('Edificios', on_delete=models.CASCADE)

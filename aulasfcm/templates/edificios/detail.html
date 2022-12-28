@@ -1,0 +1,30 @@
+{% include "header.html" %}
+<html>
+
+    <head>
+        {# Cargamos libreria bootstrap #}
+        {% load bootstrap4 %}
+        {# Cargamos bootstrap css #}
+        {% bootstrap_css %}
+        {# Archivos #}
+        {% load static %}
+
+    </head>
+
+    <body>
+        {# JS y jquery bootstrap #}
+        {% bootstrap_javascript jquery='full' %}
+
+        <div class="col-sm-10"> <!-- Margen izquierdo -->
+
+            <h4 style="font-weight:bold;">Detalles</h4>
+
+            <p><span style="font-weight:bold;">Nombre:</span> <br> {{object.nombre}}</p>
+            <p><span style="font-weight:bold;">Ubicación:</span> <br> {{object.ubicacion}}</p>
+            
+            <!-- Botón para volver al Home -->
+            <a href="../" type="submit" class="btn btn-primary"> < Volver </a>
+        </div>
+    </body>
+
+</html>

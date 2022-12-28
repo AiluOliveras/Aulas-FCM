@@ -1,13 +1,13 @@
 from django.shortcuts import render
 from django.views.generic import ListView, DetailView, DeleteView
 from django.views.generic.edit import CreateView, UpdateView
-from ..models import Aulas
+from ..models import Aulas, Edificios
 
 from django.urls import reverse
 from django.contrib import messages
 from django.contrib.messages.views import SuccessMessageMixin
 from django import forms
-
+from ..forms import AulasForm
 
 class AulasList(ListView):
     model = Aulas
@@ -16,25 +16,32 @@ class AulasList(ListView):
     ordering = ['-id']
 
 class AulasCreate(SuccessMessageMixin, CreateView):
-    model = Aulas
-    form = Aulas
-    fields = "__all__"
+    form_class = AulasForm
     success_message = 'Aula creada exitosamente!'
     
     def get_success_url(self):
         return reverse('aulas')
+
+    def get_context_data(self, **kwargs):
+        context = super(AulasCreate, self).get_context_data(**kwargs) # GET de la data default del contexto
+        context['edificios'] = Edificios.objects.all() # Agrego listado de edificios al contexto
+        return context
 
 class AulasDetail(DetailView):
     model = Aulas
 
 class AulasUpdate(SuccessMessageMixin, UpdateView):
     model = Aulas
-    form = Aulas
-    fields = "__all__"
+    form_class = AulasForm
     success_message = 'Aula actualizada exitosamente!'
 
     def get_success_url(self):
         return reverse('aulas')
+
+    def get_context_data(self, **kwargs):
+        context = super(AulasUpdate, self).get_context_data(**kwargs) # GET de la data default
+        context['edificios'] = Edificios.objects.all() # Agrego listado de edificios al contexto
+        return context
 
 class AulasDelete(SuccessMessageMixin, DeleteView):
     model = Aulas

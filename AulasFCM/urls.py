@@ -15,7 +15,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from aulasfcm.views import AulasCreate,AulasDelete,AulasDetail,AulasList,AulasUpdate
+from aulasfcm.views import AulasCreate,AulasDelete,AulasDetail,AulasList,AulasUpdate, EdificiosCreate, EdificiosDelete, EdificiosDetail, EdificiosList, EdificiosUpdate
 
 urlpatterns = [
     path('bienvenida/', include('aulasfcm.urls')),
@@ -24,6 +24,12 @@ urlpatterns = [
     path('aulas/crear', AulasCreate.as_view(template_name = "aulas/create.html")),
     path('aulas/editar/<int:pk>', AulasUpdate.as_view(template_name="aulas/update.html")),
     path('aulas/eliminar/<int:pk>',AulasDelete.as_view()),
+
+    path('edificios/', EdificiosList.as_view(template_name = "edificios/index.html"), name='edificios'),
+    path('edificios/detalle/<int:pk>', EdificiosDetail.as_view(template_name = "edificios/detail.html")),
+    path('edificios/crear', EdificiosCreate.as_view(template_name = "edificios/create.html")),
+    path('edificios/editar/<int:pk>', EdificiosUpdate.as_view(template_name="edificios/update.html")),
+    path('edificios/eliminar/<int:pk>', EdificiosDelete.as_view()),
 
     path('admin/', admin.site.urls),
 ]
