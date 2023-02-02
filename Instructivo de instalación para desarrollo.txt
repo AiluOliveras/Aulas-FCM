@@ -23,3 +23,5 @@ Comandos importantes:
 - python3 manage.py runserver -> levantar app
 - python3 manage.py makemigrations -> crea migraciones automaticamente (no se escriben a mano)
 - python3 manage.py migrate -> aplica migraciones a bbdd, importante antes de empezar a programar para ver reflejado el modelo.
+- docker-compose build -> construir contenedor docker
+- docker-compose up -> levantar contenedor

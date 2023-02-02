@@ -4,3 +4,5 @@ AulasFCM/settings.py
 venv/
 .vscode
 calenv/
+db/
+docker-compose.yml
