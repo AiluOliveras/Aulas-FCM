@@ -22,9 +22,12 @@
             </div>
 
             <!-- Barra de búsqueda -->
+            <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
             <form method="GET" action="" id="searchform">
-                <input class="searchfield" style="outline: none; height: 35;" id="searchbox" name="nombre" type="text" value="{{ request.GET.nombre }}" placeholder="Nombre"/>
-                <button class="btn btn-primary" type="submit"> Buscar </button>
+                <input class="searchfield" style="outline: none;" id="searchbox" name="nombre" type="text" value="{{ request.GET.nombre }}" placeholder="Buscar..."/>
+                <button class="btn btn-primary" style="height: 34;" type="submit">
+                    <i class="fa fa-search"></i>
+                </button>
             </form>
         </div>
 
