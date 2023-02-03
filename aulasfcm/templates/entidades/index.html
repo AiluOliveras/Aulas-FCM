@@ -15,8 +15,17 @@
         {# JS y jquery bootstrap #}
         {% bootstrap_javascript jquery='full' %}
 
-        <div allign="left" class="btn_crear mb-3">
-            <a href="crear" type="button" class="btn btn-primary">Crear</a>
+        <!-- Div c/ create + búsqueda-->
+        <div style="display:flex; flex-direction: row; justify-content: space-between; align-items:center">
+            <div class="btn_crear mb-3">
+                <a href="crear" type="button" class="btn btn-primary">Crear</a>
+            </div>
+
+            <!-- Barra de búsqueda -->
+            <form method="GET" action="" id="searchform">
+                <input class="searchfield" style="outline: none; height: 35;" id="searchbox" name="nombre" type="text" value="{{ request.GET.nombre }}" placeholder="Nombre"/>
+                <button class="btn btn-primary" type="submit"> Buscar </button>
+            </form>
         </div>
 
         <!-- Confirmación de operación exitosa -->

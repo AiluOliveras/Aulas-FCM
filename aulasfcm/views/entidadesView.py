@@ -9,17 +9,18 @@ from django.contrib.messages.views import SuccessMessageMixin
 from django import forms
 from ..forms import EntidadesForm
 
-
-class EntidadesList(ListView):
-    model = Entidades
-
-    ordering = ['-nombre']
-
 class EntidadesList(ListView):
     model = Entidades
     paginate_by = 5
 
     ordering = ['-id']
+
+    def get_queryset(self):
+        nombre = self.request.GET.get('nombre')
+        if nombre:
+            return Entidades.objects.filter(nombre__icontains=nombre)
+        else:
+            return Entidades.objects.all()
 
 class EntidadesCreate(SuccessMessageMixin, CreateView):
     form_class = EntidadesForm

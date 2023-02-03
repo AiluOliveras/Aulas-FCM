@@ -9,12 +9,6 @@ from django.contrib.messages.views import SuccessMessageMixin
 from django import forms
 from ..forms import EdificiosForm
 
-
-class EdificiosList(ListView):
-    model = Edificios
-
-    ordering = ['-nombre']
-
 class EdificiosList(ListView):
     model = Edificios
     paginate_by = 5
