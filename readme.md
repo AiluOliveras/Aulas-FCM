@@ -7,6 +7,7 @@ El proyecto fué creado con:
 * Mysql 8
 * Django 4
 * Bootstrap 4
+* Jquery
 	
 ## Instalación
 Para saber mas de la instalación, leer instructivo.

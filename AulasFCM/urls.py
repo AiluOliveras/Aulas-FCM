@@ -16,6 +16,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from aulasfcm.views import AulasCreate,AulasDelete,AulasDetail,AulasList,AulasUpdate, EdificiosCreate, EdificiosDelete, EdificiosDetail, EdificiosList, EdificiosUpdate
+from aulasfcm.views import EntidadesCreate, EntidadesDelete, EntidadesDetail, EntidadesList, EntidadesUpdate
 
 urlpatterns = [
     path('bienvenida/', include('aulasfcm.urls')),
@@ -30,6 +31,13 @@ urlpatterns = [
     path('edificios/crear', EdificiosCreate.as_view(template_name = "edificios/create.html")),
     path('edificios/editar/<int:pk>', EdificiosUpdate.as_view(template_name="edificios/update.html")),
     path('edificios/eliminar/<int:pk>', EdificiosDelete.as_view()),
+
+    path('entidades/', EntidadesList.as_view(template_name = "entidades/index.html"), name='entidades'),
+    path('entidades/detalle/<int:pk>', EntidadesDetail.as_view(template_name = "entidades/detail.html")),
+    path('entidades/crear', EntidadesCreate.as_view(template_name = "entidades/create.html")),
+    path('entidades/editar/<int:pk>', EntidadesUpdate.as_view(template_name="entidades/update.html")),
+    path('entidades/eliminar/<int:pk>', EntidadesDelete.as_view()),
+
 
     path('admin/', admin.site.urls),
 ]

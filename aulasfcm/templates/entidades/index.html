@@ -1,0 +1,110 @@
+{% include "header.html" %}
+<html>
+
+    <head>
+        {# Cargamos libreria bootstrap #}
+        {% load bootstrap4 %}
+        {# Cargamos bootstrap css #}
+        {% bootstrap_css %}
+        {# Archivos #}
+        {% load static %}
+
+    </head>
+
+    <body>
+        {# JS y jquery bootstrap #}
+        {% bootstrap_javascript jquery='full' %}
+
+        <div allign="left" class="btn_crear mb-3">
+            <a href="crear" type="button" class="btn btn-primary">Crear</a>
+        </div>
+
+        <!-- Confirmación de operación exitosa -->
+        {% if messages %}
+            <ul class="messages list-group mb-3">
+            {% for message in messages %}
+                <li{% if message.tags %} style="background-color: #b0ccf1;text-align: center;" class="{{ message.tags }} list-group-item list-group-item-primary"{% endif %}>{{ message }}</li>
+            {% endfor %}
+            </ul>
+        {% endif %}
+
+
+        <table class="table table-striped table-hover">
+            <thead>
+            <tr>
+                <th width="35%">Nombre</th>
+                <th>Descripción</th>
+                <th>Email</th>
+                <th>Teléfono</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            
+            <!-- Recorremos los objetos -->
+            {% for ent in object_list %}
+            <tr>
+                <td>{{ ent.nombre }}</td>
+                <td>{{ ent.descripcion }}</td>
+                <td>{{ ent.email }}</td>
+                {% if ent.telefono %} <!-- Cambia True/False por Si/No-->
+                    <td>{{ ent.telefono }}</td>
+                    {% else %}
+                    <td>-</td>
+                {% endif %}
+                
+                <td>
+                <!-- Form para eliminar  -->                        
+                    <form method="POST" action="eliminar/{{ent.id}}">
+                        <div class="btn-group">
+            
+                        <!-- Botones:  Ver, Editar y Eliminar -->
+                        <a href="detalle/{{ent.id}}" title="Ver" type="button" class="btn btn-success">Ver </a>
+                        <a href="editar/{{ent.id}}" title="Editar" type="button" class="btn btn-primary">Editar </a>
+                        <button class="btn btn-danger" onclick="return eliminar('{{ent.nombre}}');" type="submit">
+                            Eliminar
+                        </button>
+                        </div>
+                    </form>
+        
+                </td>
+            </tr>
+            {% endfor %}
+        
+            </tbody>
+        </table>
+        
+        <!-- Paginador de Entidades (la cantidad x pagina se define en la view)-->
+        <div class="pagination" style="width: 100%; text-align: center;display: inline-block;">
+            <span class="page-links">
+                <!-- Pagina previa -->
+                {% if page_obj.has_previous %}
+                    <a class="btn btn-outline-dark" href="/entidades?page={{ page_obj.previous_page_number }}">Anterior</a>
+                {% endif %}
+                <!-- Pagina actual -->
+                    <span class="page-current">
+                        Página {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}
+                    </span>
+                <!-- Pagina anterior -->
+                {% if page_obj.has_next %}
+                    <a class="btn btn-outline-dark" href="/entidades?page={{ page_obj.next_page_number }}">Siguiente</a>
+                {% endif %}
+            </span>
+        </div>
+    </body>
+
+    <!-- Script de borrado -->
+    <script type="text/javascript">
+        function eliminar(entidad) {
+          var x = confirm("¿Desea eliminar la entidad: "+entidad+"?");
+          if (x)
+            return true;
+          else
+            return false;
+        }
+      </script>
+      
+    </body>
+  </html>
+  
+</html>
