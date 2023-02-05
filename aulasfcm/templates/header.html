@@ -35,22 +35,43 @@
                 <li class="nav-item">
                     <a class="nav-link" href="">Consultas</a>
                 </li>
+
+                <!-- Menu usuarios -->
+                {% if user.is_authenticated %}
                 <li class="dropdown"> <!-- Dropdown de administracion -->
                     <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="true"> Administración <span class="caret"></span></a>
                     <ul class="dropdown-menu">
-                        <li><a style="margin-left:10;color:#4d6b93" href="/aulas">Aulas</a></li>
-                        <hr class="my-2"/> <!-- Separadores del dropdown -->
-                        <li><a style="margin-left:10;color:#4d6b93" href="/edificios">Edificios</a></li>
-                        <hr class="my-2"/>
                         <li><a style="margin-left:10;color:#4d6b93" href="/entidades">Entidades</a></li>
-                        <hr class="my-2" />
-                        <li><a style="margin-left:10;color:#4d6b93" href="#">Usuarios</a></li>
+                        {% if request.user.is_superuser %}
+                            <hr class="my-2"/> <!-- Separadores del dropdown -->
+                            <li><a style="margin-left:10;color:#4d6b93" href="/edificios">Edificios</a></li>
+                            <hr class="my-2"/>
+                            <li><a style="margin-left:10;color:#4d6b93" href="/aulas">Aulas</a></li>
+                            <hr class="my-2" />
+                            <li><a style="margin-left:10;color:#4d6b93" href="#">Usuarios</a></li>
+                        {% endif %}
+
                     </ul>
                 </li>
+                {% endif %}
                 </ul>
             </div>
-            <!-- Boton para Login -->
-            <button class="btn btn-outline-dark" type="button">Iniciar sesión</button>
+
+            <!-- Login -->
+            {% if user.is_authenticated %}
+            <img src="{% static 'icono-login.png' %}" style="width: 25px;" alt="Logo de usuario activo">
+                <!-- username -->
+                <a style="margin-right: 10px; font-size: 16px;"class="navbar-brand" href="/">{{ user.username }}</a>
+                <a class="btn btn-outline-dark" type="button" href="{% url 'logout' %}">
+                    Cerrar sesión <i class="fas fa-sign-in-alt"></i>
+                </a>
+            {% else %}
+            <a class="btn btn-outline-dark" type="button" href="{% url 'login' %}">
+                Iniciar sesión <i class="fas fa-sign-in-alt"></i>
+            </a>
+            {% endif %}
+
+            
         </nav>
         <br style="line-height: 1%;"></br> <!-- Line break entre header y page -->
     </body>

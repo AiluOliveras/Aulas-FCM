@@ -72,10 +72,12 @@
             
                         <!-- Botones:  Ver, Editar y Eliminar -->
                         <a href="detalle/{{ent.id}}" title="Ver" type="button" class="btn btn-success">Ver </a>
+                        {% if request.user.is_superuser %}
                         <a href="editar/{{ent.id}}" title="Editar" type="button" class="btn btn-primary">Editar </a>
                         <button class="btn btn-danger" onclick="return eliminar('{{ent.nombre}}');" type="submit">
                             Eliminar
                         </button>
+                        {% endif %}
                         </div>
                     </form>
         

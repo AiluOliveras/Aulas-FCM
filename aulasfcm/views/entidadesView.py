@@ -8,6 +8,7 @@ from django.contrib import messages
 from django.contrib.messages.views import SuccessMessageMixin
 from django import forms
 from ..forms import EntidadesForm
+from django.contrib.auth.mixins import PermissionRequiredMixin
 
 class EntidadesList(ListView):
     model = Entidades
@@ -32,18 +33,20 @@ class EntidadesCreate(SuccessMessageMixin, CreateView):
 class EntidadesDetail(DetailView):
     model = Entidades
 
-class EntidadesUpdate(SuccessMessageMixin, UpdateView):
+class EntidadesUpdate(PermissionRequiredMixin, SuccessMessageMixin, UpdateView):
     model = Entidades
     form_class = EntidadesForm
     success_message = 'Entidad actualizada exitosamente!'
+    permission_required = 'change_entidades'
 
     def get_success_url(self):
         return reverse('entidades')
 
-class EntidadesDelete(SuccessMessageMixin, DeleteView):
+class EntidadesDelete(PermissionRequiredMixin, SuccessMessageMixin, DeleteView):
     model = Entidades
     form = Entidades
     fields = "__all__"
+    permission_required = 'delete_entidades'
 
     def get_success_url(self):
         success_message = 'Entidad eliminada exitosamente!'

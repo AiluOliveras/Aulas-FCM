@@ -8,6 +8,7 @@ from django.contrib import messages
 from django.contrib.messages.views import SuccessMessageMixin
 from django import forms
 from ..forms import AulasForm
+from django.contrib.auth.mixins import PermissionRequiredMixin
 
 class AulasList(ListView):
     model = Aulas
@@ -15,9 +16,10 @@ class AulasList(ListView):
 
     ordering = ['-id']
 
-class AulasCreate(SuccessMessageMixin, CreateView):
+class AulasCreate(PermissionRequiredMixin, SuccessMessageMixin, CreateView):
     form_class = AulasForm
     success_message = 'Aula creada exitosamente!'
+    permission_required = 'add_aulas'
     
     def get_success_url(self):
         return reverse('aulas')
@@ -30,10 +32,11 @@ class AulasCreate(SuccessMessageMixin, CreateView):
 class AulasDetail(DetailView):
     model = Aulas
 
-class AulasUpdate(SuccessMessageMixin, UpdateView):
+class AulasUpdate(PermissionRequiredMixin, SuccessMessageMixin, UpdateView):
     model = Aulas
     form_class = AulasForm
     success_message = 'Aula actualizada exitosamente!'
+    permission_required = 'change_aulas'
 
     def get_success_url(self):
         return reverse('aulas')
@@ -43,10 +46,11 @@ class AulasUpdate(SuccessMessageMixin, UpdateView):
         context['edificios'] = Edificios.objects.all() # Agrego listado de edificios al contexto
         return context
 
-class AulasDelete(SuccessMessageMixin, DeleteView):
+class AulasDelete(PermissionRequiredMixin, SuccessMessageMixin, DeleteView):
     model = Aulas
     form = Aulas
     fields = "__all__"
+    permission_required = 'delete_aulas'
 
     def get_success_url(self):
         success_message = 'Aula eliminada exitosamente!'
