@@ -18,11 +18,13 @@ from django.urls import path, include
 from django.contrib.auth.views import LoginView, LogoutView
 from aulasfcm.views import AulasCreate,AulasDelete,AulasDetail,AulasList,AulasUpdate, EdificiosCreate, EdificiosDelete, EdificiosDetail, EdificiosList, EdificiosUpdate
 from aulasfcm.views import EntidadesCreate, EntidadesDelete, EntidadesDetail, EntidadesList, EntidadesUpdate
+from aulasfcm.views import PasswordChangeView, CustomPasswordChangeView
 from django.contrib.auth.decorators import login_required, permission_required
+from django.contrib.auth import views as auth_views
 
 urlpatterns = [
     path('bienvenida/', include('aulasfcm.urls')),
-    
+
     path('aulas/', login_required((AulasList.as_view(template_name = "aulas/index.html"))), name='aulas'),
     path('aulas/detalle/<int:pk>', login_required(AulasDetail.as_view(template_name = "aulas/detail.html"))),
     path('aulas/crear', login_required(AulasCreate.as_view(template_name = "aulas/create.html"))),
@@ -40,6 +42,9 @@ urlpatterns = [
     path('entidades/crear', login_required(EntidadesCreate.as_view(template_name = "entidades/create.html"))),
     path('entidades/editar/<int:pk>', login_required(EntidadesUpdate.as_view(template_name="entidades/update.html"))),
     path('entidades/eliminar/<int:pk>', login_required(EntidadesDelete.as_view())),
+
+    path('cambiar-clave/', login_required(PasswordChangeView.as_view(template_name='change-password.html',success_url="/cambiar-clave/exitoso")),name='cambiar-clave'),
+    path('cambiar-clave/exitoso', login_required(CustomPasswordChangeView.as_view(template_name='change-password.html',success_url="/cambiar-clave/exitoso")), name = 'cambiar-clave/exitoso'),
 
     path("accounts/", include("django.contrib.auth.urls")),
     path('admin/', admin.site.urls),
