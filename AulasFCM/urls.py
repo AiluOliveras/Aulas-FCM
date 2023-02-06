@@ -18,7 +18,7 @@ from django.urls import path, include
 from django.contrib.auth.views import LoginView, LogoutView
 from aulasfcm.views import AulasCreate,AulasDelete,AulasDetail,AulasList,AulasUpdate, EdificiosCreate, EdificiosDelete, EdificiosDetail, EdificiosList, EdificiosUpdate
 from aulasfcm.views import EntidadesCreate, EntidadesDelete, EntidadesDetail, EntidadesList, EntidadesUpdate
-from aulasfcm.views import PasswordChangeView, CustomPasswordChangeView
+from aulasfcm.views import PasswordChangeView, CustomPasswordChangeView, UsuariosUpdate, CustomUsuariosUpdate
 from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.auth import views as auth_views
 
@@ -45,7 +45,8 @@ urlpatterns = [
 
     path('cambiar-clave/', login_required(PasswordChangeView.as_view(template_name='change-password.html',success_url="/cambiar-clave/exitoso")),name='cambiar-clave'),
     path('cambiar-clave/exitoso', login_required(CustomPasswordChangeView.as_view(template_name='change-password.html',success_url="/cambiar-clave/exitoso")), name = 'cambiar-clave/exitoso'),
-
+    path('cambiar-email/', login_required(UsuariosUpdate.as_view(template_name="change-email.html"))),
+    path('cambiar-email/exitoso',login_required(CustomUsuariosUpdate.as_view(template_name='change-email.html')), name = 'cambiar-email/exitoso'),
     path("accounts/", include("django.contrib.auth.urls")),
     path('admin/', admin.site.urls),
 ]

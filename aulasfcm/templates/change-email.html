@@ -1,0 +1,58 @@
+{% include "header.html" %}
+
+<html>
+
+    <head>
+        {# Cargamos libreria bootstrap #}
+        {% load bootstrap4 %}
+        {# Cargamos bootstrap css #}
+        {% bootstrap_css %}
+        {# Archivos #}
+        {% load static %}
+
+    </head>
+
+    <body>
+        {# JS y jquery bootstrap #}
+        {% bootstrap_javascript jquery='full' %}
+        {# Widget Tweaks carga las cajas de texto #}
+        {% load widget_tweaks %}
+
+        <!-- Si el cambio de clave fué exitoso -->
+        {% if done %}
+        <div class="alert alert-success" role="alert">
+            Su correo electrónico fué modificado exitosamente.
+        </div>
+        {% endif%}
+
+        <h3 style="margin-left:2%;">Cambiar correo electrónico de su cuenta. </h3>
+        <br>
+        <form method="post">
+            {% csrf_token %}
+
+            <p style="margin-left:2%;">
+                <label style="font-weight: bold;" for="email">Correo electrónico actual: {{ mail }}</label> 
+            </p>
+
+            <p style="margin-left:2%;">
+                <label for="email">Ingrese su nuevo correo:</label>
+            </p>
+            <p style="margin-left:2%;">
+                <input style="width: 50%;" type="email" name="email" autofocus="" required="" id="email">
+            </p>
+
+            <!-- Errores en el form al cambiar mail -->
+            {% for field in form %}
+                {% if field.errors  %}
+                    <div class="alert alert-danger" >{{ field.errors }}</div>
+                {% endif %}
+            {% endfor %}
+
+            <br>
+            <a class="btn btn-primary" style="margin-left:2%;" href="../" type="submit"> < Volver </a>
+            <button class="btn btn-primary" style="margin-left:2%;" type="submit"> Confirmar </button>
+        </form>
+
+    </body>
+
+</html>
