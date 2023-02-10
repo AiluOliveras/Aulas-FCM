@@ -9,6 +9,8 @@ from django.contrib.messages.views import SuccessMessageMixin
 from django import forms
 from ..forms import EdificiosForm
 from django.contrib.auth.mixins import PermissionRequiredMixin
+from django.http import HttpResponseRedirect, HttpResponse
+from django.contrib import messages
 
 class EdificiosList(ListView):
     model = Edificios
@@ -46,3 +48,21 @@ class EdificiosDelete(PermissionRequiredMixin, SuccessMessageMixin, DeleteView):
         success_message = 'Edificio eliminado exitosamente!'
         messages.success (self.request, (success_message))
         return reverse('edificios')
+
+    
+def create_gestor_edificio(request, *args, **kwargs):
+    from django.contrib.auth.models import User
+    gestor= request.GET.get("gestor")
+    edificio= request.GET.get("edificio")
+
+    if edificio and gestor:
+
+        #se elimina permiso del gestor sobre el edificio dado
+        edificio_up = Edificios.objects.get(id=edificio)
+        gestor_up = User.objects.get(id=gestor)
+        edificio_up.gestores.remove(gestor_up)
+
+        messages.success(request,('Gestor dado de baja exitosamente!'))
+        return HttpResponseRedirect(request.META.get('HTTP_REFERER')) #recargo pag de gestores base
+
+    return HttpResponse("Hubo un error, por favor regrese a la página anterior.")

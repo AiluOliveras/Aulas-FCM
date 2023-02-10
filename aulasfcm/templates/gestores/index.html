@@ -1,0 +1,78 @@
+{% include "header.html" %}
+<html>
+
+    <head>
+        {# Cargamos libreria bootstrap #}
+        {% load bootstrap4 %}
+        {# Cargamos bootstrap css #}
+        {% bootstrap_css %}
+        {# Archivos #}
+        {% load static %}
+
+    </head>
+
+    <body>
+        {# JS y jquery bootstrap #}
+        {% bootstrap_javascript jquery='full' %}
+
+        <!-- Div c/ create + nombre edificio -->
+        <div style="display:flex; flex-direction: row; justify-content: space-between; align-items:center">
+            <h3 style="margin-left:1%;">Gestores de: {{ edificio_obj.nombre }} </h3>
+            <div class="btn_crear mb-3" style="margin-right:1%;">
+                <a href="crear" type="button" class="btn btn-primary">Agregar gestor</a>
+            </div>
+
+        </div>
+
+        <!-- Confirmación de operación exitosa -->
+        {% if messages %}
+            <ul class="messages list-group mb-3">
+            {% for message in messages %}
+                <li{% if message.tags %} style="background-color: #b0ccf1;text-align: center;" class="{{ message.tags }} list-group-item list-group-item-primary"{% endif %}>{{ message }}</li>
+            {% endfor %}
+            </ul>
+        {% endif %}
+
+
+        <table class="table table-striped table-hover">
+            <thead>
+            <tr>
+                <th width="35%">Nombre de Usuario</th>
+                <th>Email</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            
+            <!-- Recorremos los objetos -->
+            {% for gest in object_list %}
+            <tr>
+                <td>{{ gest.username }}</td>
+                <td>{{ gest.email }}</td>
+                <td>
+                    <!-- Botones -->
+                    <a href="borrado?gestor={{ gest.id }}&edificio={{ edificio_obj.id }}" onclick="return eliminar('{{gest.username}}','{{edificio_obj.nombre}}');" title="BorrarGestorEdificio" type="button" class="btn btn-danger">Dar de baja</a> 
+                </td>
+            </tr>
+            {% endfor %}
+        
+            </tbody>
+        </table>
+        
+    </body>
+
+    <!-- Script de borrado -->
+    <script type="text/javascript">
+        function eliminar(gestor,edificio) {
+          var x = confirm("¿Desea dar de baja a "+gestor+" como gestor de "+edificio+"?");
+          if (x)
+            return true;
+          else
+            return false;
+        }
+      </script>
+      
+    </body>
+  </html>
+  
+</html>

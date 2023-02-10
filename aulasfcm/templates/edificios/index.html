@@ -56,6 +56,12 @@
                             Eliminar
                         </button>
                         </div>
+
+                        <!-- Login -->
+                        {% if request.user.is_superuser %}
+                            <a href="gestores?edificio={{edificio.id}}" title="Gestores" type="button" class="btn btn-secondary" style="margin-left: 20px;" >Gestores </a>
+                        {% endif %}
+
                     </form>
         
                 </td>

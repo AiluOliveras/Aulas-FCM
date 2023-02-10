@@ -19,6 +19,7 @@ from django.contrib.auth.views import LoginView, LogoutView
 from aulasfcm.views import AulasCreate,AulasDelete,AulasDetail,AulasList,AulasUpdate, EdificiosCreate, EdificiosDelete, EdificiosDetail, EdificiosList, EdificiosUpdate
 from aulasfcm.views import EntidadesCreate, EntidadesDelete, EntidadesDetail, EntidadesList, EntidadesUpdate
 from aulasfcm.views import PasswordChangeView, CustomPasswordChangeView, UsuariosUpdate, CustomUsuariosUpdate
+from aulasfcm.views import GestoresList, create_gestor_edificio
 from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.auth import views as auth_views
 
@@ -36,6 +37,8 @@ urlpatterns = [
     path('edificios/crear', login_required(EdificiosCreate.as_view(template_name = "edificios/create.html"))),
     path('edificios/editar/<int:pk>', login_required(EdificiosUpdate.as_view(template_name="edificios/update.html"))),
     path('edificios/eliminar/<int:pk>', login_required(EdificiosDelete.as_view())),
+    path('edificios/gestores/',login_required(GestoresList.as_view(template_name = "gestores/index.html")), name='gestores'),
+    path('edificios/gestores/borrado',login_required(create_gestor_edificio)),
 
     path('entidades/', login_required(EntidadesList.as_view(template_name = "entidades/index.html")), name='entidades'),
     path('entidades/detalle/<int:pk>', login_required(EntidadesDetail.as_view(template_name = "entidades/detail.html"))),
@@ -43,6 +46,7 @@ urlpatterns = [
     path('entidades/editar/<int:pk>', login_required(EntidadesUpdate.as_view(template_name="entidades/update.html"))),
     path('entidades/eliminar/<int:pk>', login_required(EntidadesDelete.as_view())),
 
+    # Administracion del usuario/admin
     path('cambiar-clave/', login_required(PasswordChangeView.as_view(template_name='change-password.html',success_url="/cambiar-clave/exitoso")),name='cambiar-clave'),
     path('cambiar-clave/exitoso', login_required(CustomPasswordChangeView.as_view(template_name='change-password.html',success_url="/cambiar-clave/exitoso")), name = 'cambiar-clave/exitoso'),
     path('cambiar-email/', login_required(UsuariosUpdate.as_view(template_name="change-email.html"))),
