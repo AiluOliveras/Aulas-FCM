@@ -19,7 +19,7 @@ from django.contrib.auth.views import LoginView, LogoutView
 from aulasfcm.views import AulasCreate,AulasDelete,AulasDetail,AulasList,AulasUpdate, EdificiosCreate, EdificiosDelete, EdificiosDetail, EdificiosList, EdificiosUpdate
 from aulasfcm.views import EntidadesCreate, EntidadesDelete, EntidadesDetail, EntidadesList, EntidadesUpdate
 from aulasfcm.views import PasswordChangeView, CustomPasswordChangeView, UsuariosUpdate, CustomUsuariosUpdate
-from aulasfcm.views import GestoresList, create_gestor_edificio
+from aulasfcm.views import GestoresList, destroy_gestor_edificio
 from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.auth import views as auth_views
 
@@ -38,7 +38,7 @@ urlpatterns = [
     path('edificios/editar/<int:pk>', login_required(EdificiosUpdate.as_view(template_name="edificios/update.html"))),
     path('edificios/eliminar/<int:pk>', login_required(EdificiosDelete.as_view())),
     path('edificios/gestores/',login_required(GestoresList.as_view(template_name = "gestores/index.html")), name='gestores'),
-    path('edificios/gestores/borrado',login_required(create_gestor_edificio)),
+    path('edificios/gestores/borrado',login_required(destroy_gestor_edificio)),
 
     path('entidades/', login_required(EntidadesList.as_view(template_name = "entidades/index.html")), name='entidades'),
     path('entidades/detalle/<int:pk>', login_required(EntidadesDetail.as_view(template_name = "entidades/detail.html"))),

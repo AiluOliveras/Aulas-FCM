@@ -50,7 +50,7 @@ class EdificiosDelete(PermissionRequiredMixin, SuccessMessageMixin, DeleteView):
         return reverse('edificios')
 
     
-def create_gestor_edificio(request, *args, **kwargs):
+def destroy_gestor_edificio(request, *args, **kwargs):
     from django.contrib.auth.models import User
     gestor= request.GET.get("gestor")
     edificio= request.GET.get("edificio")
