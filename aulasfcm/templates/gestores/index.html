@@ -19,11 +19,11 @@
         <div style="display:flex; flex-direction: row; justify-content: space-between; align-items:center">
             <h3 style="margin-left:1%;">Gestores de: {{ edificio_obj.nombre }} </h3>
             <div class="btn_crear mb-3" style="margin-right:1%;">
-                <a href="crear" type="button" class="btn btn-primary">Agregar gestor</a>
+                <a href="/gestores/agregar?edificio_id={{ edificio_obj.id }}&filtro_edificio=true" type="button" class="btn btn-primary">Agregar gestor</a>
             </div>
 
         </div>
-
+        
         <!-- Confirmación de operación exitosa -->
         {% if messages %}
             <ul class="messages list-group mb-3">
@@ -58,6 +58,8 @@
         
             </tbody>
         </table>
+
+        <a class="btn btn-primary" style="margin-left:1%;" href="../" type="submit"> < Volver </a>
         
     </body>
 

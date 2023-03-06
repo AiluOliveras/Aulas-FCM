@@ -7,6 +7,8 @@ from django.urls import reverse
 from ..forms import UpdateUserForm
 from django.contrib.auth.models import User
 from django.views.generic.edit import UpdateView
+from django.views.generic import ListView
+from ..models import Edificios
 
 class PasswordChangeView(PasswordChangeView):
     form_class = PasswordChangeForm
@@ -48,5 +50,42 @@ class CustomUsuariosUpdate(UpdateView):
     def get_context_data(self, **kwargs):
         context = super(CustomUsuariosUpdate, self).get_context_data(**kwargs) # GET de la data default
         context['mail'] = (User.objects.get(id=self.request.user.id)).email # Agrego listado de edificios al contexto
+
+        return context
+
+class UsuariosList(ListView):
+    model = User
+    paginate_by = 6
+
+    ordering = ['username']
+
+    def get_queryset(self):
+        filtro_edificio= self.request.GET.get("filtro_edificio") #param para saber si es para filtrar users
+        if filtro_edificio:
+            print('true - filtro')
+    
+            edificio= self.request.GET.get("edificio_id")
+            edificio = Edificios.objects.get(id=edificio)
+
+            #retorno users que no son gestores de este edificio
+            gestores=[]
+            for gest in edificio.gestores.all():
+                gestores.append(gest.id) #guardo gestores
+
+            #filtro los que son gestores
+            queryset = User.objects.exclude(id__in=gestores)
+        else:
+            #retorno todos los user
+            print('false - todos')
+            queryset = User.objects.all()
+
+        return queryset
+
+    def get_context_data(self, **kwargs):
+        context = super(UsuariosList, self).get_context_data(**kwargs) # GET de la data default
+        #context['usuarios'] = User.objects.all()# Agrego listado de edificios al contexto
+        context['filtro_edificio'] = self.request.GET.get('filtro_edificio', 'None')
+        edificio= self.request.GET.get("edificio_id")
+        context['edificio_obj'] = Edificios.objects.get(id=edificio) # Agrego edificio seleccionado al contexto
 
         return context

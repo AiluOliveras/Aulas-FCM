@@ -16,7 +16,7 @@ class EdificiosList(ListView):
     model = Edificios
     paginate_by = 5
 
-    ordering = ['-id']
+    ordering = ['nombre']
 
 class EdificiosCreate(PermissionRequiredMixin, SuccessMessageMixin, CreateView):
     form_class = EdificiosForm
@@ -51,18 +51,38 @@ class EdificiosDelete(PermissionRequiredMixin, SuccessMessageMixin, DeleteView):
 
     
 def destroy_gestor_edificio(request, *args, **kwargs):
-    from django.contrib.auth.models import User
-    gestor= request.GET.get("gestor")
-    edificio= request.GET.get("edificio")
+    if request.user.is_superuser:
+        from django.contrib.auth.models import User
+        gestor= request.GET.get("gestor")
+        edificio= request.GET.get("edificio")
 
-    if edificio and gestor:
+        if edificio and gestor:
 
-        #se elimina permiso del gestor sobre el edificio dado
-        edificio_up = Edificios.objects.get(id=edificio)
-        gestor_up = User.objects.get(id=gestor)
-        edificio_up.gestores.remove(gestor_up)
+            #se elimina permiso del gestor sobre el edificio dado
+            edificio_up = Edificios.objects.get(id=edificio)
+            gestor_up = User.objects.get(id=gestor)
+            edificio_up.gestores.remove(gestor_up)
 
-        messages.success(request,('Gestor dado de baja exitosamente!'))
-        return HttpResponseRedirect(request.META.get('HTTP_REFERER')) #recargo pag de gestores base
+            messages.success(request,('Gestor dado de baja exitosamente!'))
+            return HttpResponseRedirect(request.META.get('HTTP_REFERER')) #recargo pag de gestores base
 
+    return HttpResponse("Hubo un error, por favor regrese a la página anterior.")
+
+def create_gestor_edificio(request, *args, **kwargs):
+    if request.user.is_superuser:
+        from django.contrib.auth.models import User
+        gestor= request.GET.get("gestor")
+        edificio= request.GET.get("edificio")
+
+        if edificio and gestor:
+            #checkear que no exista ya la unión
+
+            #se agrega permiso del gestor sobre el edificio dado
+            edificio_up = Edificios.objects.get(id=edificio)
+            gestor_up = User.objects.get(id=gestor)
+            edificio_up.gestores.add(gestor_up)
+
+            messages.success(request,('Gestor añadido exitosamente!'))
+            return HttpResponseRedirect('/edificios/gestores/?edificio='+edificio) #recargo pag de gestores base
+    
     return HttpResponse("Hubo un error, por favor regrese a la página anterior.")

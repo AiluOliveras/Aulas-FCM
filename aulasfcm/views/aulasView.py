@@ -14,7 +14,7 @@ class AulasList(ListView):
     model = Aulas
     paginate_by = 5
 
-    ordering = ['-id']
+    ordering = ['nombre']
 
 class AulasCreate(PermissionRequiredMixin, SuccessMessageMixin, CreateView):
     form_class = AulasForm
