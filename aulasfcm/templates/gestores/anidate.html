@@ -43,7 +43,12 @@
                 <td>{{ user.email }}</td>
                 <td>
                     <!-- Botones -->
-                    <a href="crear?gestor={{ user.id }}&edificio={{ edificio_obj.id }}" onclick="return agregar('{{user.username}}','{{edificio_obj.nombre}}');" title="AgregarGestorEdificio" type="button" class="btn btn-info">Agregar como gestor</a> 
+                    {% if user.is_superuser %}
+                        <!-- No necesita botón de alta -->
+                        <a style="cursor: not-allowed;" type="button" class="btn btn-secondary">Es administrador</a> 
+                    {% else %}
+                        <a href="crear?gestor={{ user.id }}&edificio={{ edificio_obj.id }}" onclick="return agregar('{{user.username}}','{{edificio_obj.nombre}}');" title="AgregarGestorEdificio" type="button" class="btn btn-info">Agregar como gestor</a> 
+                    {% endif %}
                 </td>
             </tr>
             {% endfor %}
