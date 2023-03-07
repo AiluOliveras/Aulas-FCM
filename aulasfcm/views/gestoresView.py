@@ -12,6 +12,7 @@ from ..models import Edificios
 
 class GestoresList(ListView):
     model = User
+    paginate_by = 6
 
     ordering = ['username']
 

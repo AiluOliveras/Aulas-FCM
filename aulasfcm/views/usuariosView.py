@@ -62,7 +62,6 @@ class UsuariosList(ListView):
     def get_queryset(self):
         filtro_edificio= self.request.GET.get("filtro_edificio") #param para saber si es para filtrar users
         if filtro_edificio:
-            print('true - filtro')
     
             edificio= self.request.GET.get("edificio_id")
             edificio = Edificios.objects.get(id=edificio)
@@ -76,7 +75,6 @@ class UsuariosList(ListView):
             queryset = User.objects.exclude(id__in=gestores)
         else:
             #retorno todos los user
-            print('false - todos')
             queryset = User.objects.all()
 
         return queryset

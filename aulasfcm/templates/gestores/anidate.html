@@ -57,6 +57,23 @@
         </table>
 
         <a class="btn btn-primary" style="margin-left:1%;" href="../edificios/gestores/?edificio={{ edificio_obj.id }}" type="submit"> < Volver </a>
+        <!-- Paginador (la cantidad x pagina se define en la view)-->
+        <div class="pagination" style="width: 100%; text-align: center;display: inline-block;">
+            <span class="page-links">
+                <!-- Pagina previa -->
+                {% if page_obj.has_previous %}
+                    <a class="btn btn-outline-dark" href="/gestores/agregar?edificio_id={{ edificio_obj.id }}&filtro_edificio=true&page={{ page_obj.previous_page_number }}">Anterior</a>
+                {% endif %}
+                <!-- Pagina actual -->
+                    <span class="page-current">
+                        Página {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}
+                    </span>
+                <!-- Pagina anterior -->
+                {% if page_obj.has_next %}
+                    <a class="btn btn-outline-dark" href="/gestores/agregar?edificio_id={{ edificio_obj.id }}&filtro_edificio=true&page={{ page_obj.next_page_number }}">Siguiente</a>
+                {% endif %}
+            </span>
+        </div>
 
         <!-- Script de borrado -->
     <script type="text/javascript">
