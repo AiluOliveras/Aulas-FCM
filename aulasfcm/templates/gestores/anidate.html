@@ -21,6 +21,18 @@
         <!-- Si el cambio de clave fué exitoso -->
         <div style="display:flex; flex-direction: row; justify-content: space-between; align-items:center">
             <h3 style="margin-left:1%;margin-bottom:1%;margin-top:5px;">Agregar gestor a: {{ edificio_obj.nombre }} </h3>
+
+            <!-- Barra de búsqueda -->
+            <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+            <form method="GET" action="/gestores/agregar" id="searchform">
+                <input class="searchfield" style="outline: none;" id="searchbox" name="username" type="text" value="{{ request.GET.username}}" placeholder="Buscar..."/>
+                <button class="btn btn-primary" style="height: 34;" type="submit">
+                    <i class="fa fa-search"></i>
+                </button>
+                <!-- Attrs que necesita el endpoint -->
+                <input type="hidden" name="edificio_id" value="{{edificio_obj.id}}"/>
+                <input type="hidden" name="filtro_edificio" value="true"/>
+            </form>
         </div>
 
         {% csrf_token %}

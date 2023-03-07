@@ -61,6 +61,7 @@ class UsuariosList(ListView):
 
     def get_queryset(self):
         filtro_edificio= self.request.GET.get("filtro_edificio") #param para saber si es para filtrar users
+        username = self.request.GET.get('username')
         if filtro_edificio:
     
             edificio= self.request.GET.get("edificio_id")
@@ -73,6 +74,9 @@ class UsuariosList(ListView):
 
             #filtro los que son gestores
             queryset = User.objects.exclude(id__in=gestores)
+
+            if (username):
+                queryset = queryset.filter(username__icontains=username)
         else:
             #retorno todos los user
             queryset = User.objects.all()
@@ -84,6 +88,7 @@ class UsuariosList(ListView):
         #context['usuarios'] = User.objects.all()# Agrego listado de edificios al contexto
         context['filtro_edificio'] = self.request.GET.get('filtro_edificio', 'None')
         edificio= self.request.GET.get("edificio_id")
+
         context['edificio_obj'] = Edificios.objects.get(id=edificio) # Agrego edificio seleccionado al contexto
 
         return context
