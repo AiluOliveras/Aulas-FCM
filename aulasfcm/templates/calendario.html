@@ -1,0 +1,117 @@
+{% include "header.html" %}
+<html>
+
+    <head>
+        {# Cargamos libreria bootstrap #}
+        {% load bootstrap4 %}
+        {# Cargamos bootstrap css #}
+        {% bootstrap_css %}
+        {# Archivos #}
+        {% load static %}
+        
+        <style>
+            .calendar {
+                width: 98%;
+                margin: auto;
+                font-size: 15px;
+            }
+            
+            .calendar tr, .calendar td {
+                border: 1px solid black; /* grosor de bordes del calendario */
+            }
+            
+            .calendar th { /* nombre cabezales mes y dias*/
+                padding: 7px;
+                text-align: center;
+                font-size: 14px;
+            }
+            
+            .calendar td { /* formato celda: colores, ancho, alto, márgenes */
+                width: 200px;
+                height: 120px;
+                padding: 3px 3px 3px 3px; 
+                border-bottom-color: #96D4D4;
+                border-right-color: #96D4D4;
+                border-left-color: #96D4D4;
+            }
+            
+            .month {
+                font-size: 25px;
+            }
+
+            /* tamaño de los numeros en el calendario */
+            .date {
+                font-size: 16px;
+            }
+
+            /* se buguea el dropdown si cambio el attr ul como abajo */
+            /* ul {
+                height: 100%;
+                padding: 0px 5px 0px 20px;
+            } */
+            
+            a {
+                color: #96D4D4;
+            }
+  
+        </style>
+
+    </head>
+
+    <body>
+        {# JS y jquery bootstrap #}
+        {% bootstrap_javascript jquery='full' %}
+
+        <div>
+            <div class="form-inline" style="margin-bottom: 1%;margin-left: 1%;">
+                <!-- DROPDOWN DE EDIFICIOS -->
+                <label for="aula" style="font-weight:bold;margin-right: 0.5%;" class="control-label">Edificio: </label>
+                <select class="form-control" name="edificio" required onchange="location = this.value;"> <!--  onchange="showDiv('hidd-aula', this)" -->
+                    {% if not edificio %}
+                        <option hidden selected value> -- Seleccione Edificio -- </option>
+                        {% for ed in edificios %}
+                            <option value="/calendario/?edificio={{ed.id}}" data-value="{{ed.id}}">{{ed.nombre}}</option>
+                        {% endfor %}
+                    {% else %}
+                        {% for eds in edificios %}
+                            {% if eds.id == edificio.id%} <!-- marco como selected -->
+                                <option selected value="/calendario/?edificio={{eds.id}}" data-value="{{eds.id}}">{{eds.nombre}}</option>
+                            {% else %} <!-- la cargo dentro del dropdown -->
+                                <option value="/calendario/?edificio={{eds.id}}" data-value="{{eds.id}}">{{eds.nombre}}</option>
+                            {% endif %}
+                        {% endfor %}
+                    {% endif %}
+                </select>
+                <!-- DROPDOWN AULAS -->
+                <label for="aula" style="font-weight:bold;margin-right: 0.5%;margin-left:1%;" class="control-label">Aula: </label>
+                <select class="form-control" name="aula" required onchange="location = this.value;"> <!--  onchange="showDiv('hidd-aula', this)" -->
+                    {% if not aula %} <!-- opcion elegida: seleccione-->
+                        <option hidden selected value> -- Seleccione Aula -- </option>
+                        {% for e in aulas %}
+                            <option value="/calendario/?edificio={{e.edificio_id}}&aula={{e.id}}" data-value="{{e.id}}">{{e.nombre}}</option>
+                        {% endfor %}
+                        {% if not edificio %}
+                            <!-- <optgroup style="margin-left:10;color:black">Datos personales</option> -->
+                            <optgroup label=". . .">
+                        {% endif %}
+                    {% else %} <!-- opcion elegida: la anterior-->
+                        {% for e in aulas %}
+                            {% if e.id == aula.id%} <!-- marco como selected -->
+                            <option selected value="/calendario/?edificio={{e.edificio_id}}&aula={{e.id}}" data-value="{{e.id}}">{{e.nombre}}</option>
+                            {% else %} <!-- la cargo dentro del dropdown -->
+                            <option value="/calendario/?edificio={{e.edificio_id}}&aula={{e.id}}" data-value="{{e.id}}">{{e.nombre}}</option>
+                            {% endif %}
+                        {% endfor %}
+                    {% endif %}
+                </select>
+            </div>
+
+        </div>
+
+        {% block content %}
+        {{ calendar }}
+        {% endblock %}
+        
+    </body>
+</html>
+    

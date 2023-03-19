@@ -4,3 +4,4 @@ from .edificiosView import EdificiosList, EdificiosUpdate, EdificiosCreate, Edif
 from .entidadesView import EntidadesList, EntidadesUpdate, EntidadesCreate, EntidadesDelete, EntidadesDetail
 from .usuariosView import PasswordChangeView, CustomPasswordChangeView, UsuariosUpdate, CustomUsuariosUpdate, UsuariosList
 from .gestoresView import GestoresList
+from .calendarView import CalendarView
