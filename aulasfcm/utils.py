@@ -8,13 +8,16 @@ class Calendar(HTMLCalendar):
         self.month = month
         super(Calendar, self).__init__()
 
+    def format_time_popover(self, hora):
+        return hora.strftime("%H:%M")
+
     # formats a day as a td
     # filter events by day
     def formatday(self, day, events):
         events_per_day = events.filter(start_time__day=day)
         d = ''
-        for event in events_per_day:
-            d += f'<li style="list-style-type:none;border-radius: 3px;background: #96d4b6;"> {event.title} </li>'  # Texto del evento en el calendario - color
+        for event in events_per_day: # Caja del evento en el calendario
+            d += f'<li data-toggle="popover" title="<b>{event.title}</b>" data-content="<b>Hora de inicio:</b> {self.format_time_popover(event.start_time)}<br/> <b>Hora de fin:</b> {self.format_time_popover(event.end_time)}</br> <b>Descripción:</b> {event.description}" data-html="true" style="list-style-type:none;border-radius: 3px;background: #96d4b6;margin-bottom:1px;cursor: pointer;"> {event.title} </li>'
 
         if day != 0:
             return f"<td style='vertical-align:top;'><span class='date'>{day}</span><ul style='padding: 0px 0px 0px 0px;'> {d} </ul></td>" # Texto del num. de día y eventos
@@ -40,7 +43,7 @@ class Calendar(HTMLCalendar):
         #cal += f'{self.formatmonthname(self.year, self.month, withyear=withyear)}\n' #mes en ingles
         cal += f'<tr><th colspan="7" class="month">{self.changemonthlang(self.month)} {self.year}</th></tr>\n' #mes en español
         #cal += f'{self.formatweekheader()}\n' #dia de sem en ingles
-        cal += f'<tr><th class="mon">Lun</th><th class="tue">Mar</th><th class="wed">Mier</th><th class="thu">Jue</th><th class="fri">Vier</th><th class="sat">Sab</th><th class="sun">Dom</th></tr>\n' #dia de sem español
+        cal += f'<tr><th class="mon">Lun</th><th class="tue">Mar</th><th class="wed">Miér</th><th class="thu">Jue</th><th class="fri">Vier</th><th class="sat">Sab</th><th class="sun">Dom</th></tr>\n' #dia de sem español
         for week in self.monthdays2calendar(self.year, self.month): #une nombre del dia de la semana con num del mes
             cal += f'{self.formatweek(week, events)}\n'
         return cal
