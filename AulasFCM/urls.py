@@ -19,7 +19,7 @@ from django.contrib.auth.views import LoginView, LogoutView
 from aulasfcm.views import AulasCreate,AulasDelete,AulasDetail,AulasList,AulasUpdate, EdificiosCreate, EdificiosDelete, EdificiosDetail, EdificiosList, EdificiosUpdate
 from aulasfcm.views import EntidadesCreate, EntidadesDelete, EntidadesDetail, EntidadesList, EntidadesUpdate
 from aulasfcm.views import PasswordChangeView, CustomPasswordChangeView, UsuariosUpdate, CustomUsuariosUpdate
-from aulasfcm.views import GestoresList, destroy_gestor_edificio, create_gestor_edificio, UsuariosList, CalendarView
+from aulasfcm.views import GestoresList, destroy_gestor_edificio, create_gestor_edificio, UsuariosList, CalendarView, EventCreate
 from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.auth import views as auth_views
 
@@ -46,10 +46,12 @@ urlpatterns = [
     path('entidades/editar/<int:pk>', login_required(EntidadesUpdate.as_view(template_name="entidades/update.html"))),
     path('entidades/eliminar/<int:pk>', login_required(EntidadesDelete.as_view())),
 
+    path('eventos/crear', login_required(EventCreate.as_view(template_name = "eventos/crear.html"))),
+
     path('gestores/agregar', login_required(UsuariosList.as_view(template_name = "gestores/anidate.html")), name='anidate'),
     path('gestores/crear',login_required(create_gestor_edificio)), #pivot e/ gestores y edificios
 
-    path('calendario/', login_required(CalendarView.as_view()), name='calendario'),
+    path('calendario/', CalendarView.as_view(), name='calendario'),
 
     # Administracion del usuario/admin
     path('cambiar-clave/', login_required(PasswordChangeView.as_view(template_name='change-password.html',success_url="/cambiar-clave/exitoso")),name='cambiar-clave'),

@@ -71,6 +71,13 @@
             margin-right: 1%;
             }
 
+            .right-crear {
+            float: right;
+            margin-bottom: 1%;
+            margin-right: 2%;
+            border-radius: 25px;
+            }
+
             .btn-info{
                 background-color: #09cca6;
             }
@@ -85,7 +92,9 @@
         <!-- Botones anterior y próximo mes -->
         <a class="btn btn-info right-m" href="/calendario?edificio={{edificio.id}}&aula={{aula.id}}&{{next_month}}"> > </a>
         <a class="btn btn-info right" href="/calendario?edificio={{edificio.id}}&aula={{aula.id}}&{{prev_month}}"> < </a>
-
+        {% if user.is_authenticated %}
+            <a class="btn btn-info right-crear" href="/eventos/crear"> + </a> <!-- Crear Evento -->
+        {% endif %}
         <!-- Script de popovers -->
         <script>
         $(document).ready(function(){

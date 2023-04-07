@@ -7,3 +7,6 @@ class Event(models.Model): #Reservas
     end_time = models.DateTimeField()
 
     aula = models.ForeignKey('Aulas', on_delete=models.CASCADE)
+    entidad = models.ForeignKey('Entidades', on_delete=models.CASCADE)
+
+    siguiente = models.ForeignKey('self', null=True, blank=True, on_delete=models.SET_NULL)

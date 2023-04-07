@@ -5,3 +5,4 @@ from .entidadesView import EntidadesList, EntidadesUpdate, EntidadesCreate, Enti
 from .usuariosView import PasswordChangeView, CustomPasswordChangeView, UsuariosUpdate, CustomUsuariosUpdate, UsuariosList
 from .gestoresView import GestoresList
 from .calendarView import CalendarView
+from .eventosView import EventCreate
