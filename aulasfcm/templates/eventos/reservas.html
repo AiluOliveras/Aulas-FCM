@@ -70,7 +70,7 @@
                     </select>
                 </div>
                 <!-- DROPDOWN ENTIDAD -->
-                <div class="form-group" style="margin-right: 1%;margin-left: 1%;"> <!-- Dropdown de entidades -->
+                <div class="form-group" style="margin-left: 1%;"> <!-- Dropdown de entidades -->
                     <label for="entidades" style="font-weight:bold;" class="control-label">Entidad: </label>
                     <select class="form-control" name="entidad">
                         {% if not entidad_selected %}
@@ -89,6 +89,21 @@
                         {% endif %}
                     </select>
                 </div>
+                <label style="margin-left: 1%;font-weight:bold;" for="fecha_in" class="control-label">Fecha inicio: </label>
+                {% if not f_inicio %}
+                <input class="form-control" type="date" id="fecha_inicio" name="fecha_inicio" required>
+                {% else %}
+                <input class="form-control" type="date" id="fecha_inicio" name="fecha_inicio" required value={{f_inicio}}>
+                {% endif %}
+                
+                <label for="fecha_fi" style="font-weight:bold;margin-left: 1%;" class="control-label">Fecha fin: </label>
+                {% if not f_fin %}
+                <input class="form-control" type="date" id="fecha_fin" style="margin-right: 1%;" name="fecha_fin" required>
+                {% else %}
+                <input class="form-control" type="date" id="fecha_fin" style="margin-right: 1%;" name="fecha_fin" required value={{f_fin}}>
+                {% endif %}
+
+
                 <button class="btn btn-primary" type="post" >Buscar</button>
             </div>
         </form>

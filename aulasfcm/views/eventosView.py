@@ -160,12 +160,18 @@ class EventosList(ListView):
 
         aula= self.request.GET.get("aula")
         if aula:
-            print(aula)
+            #print(aula)
             context['aula_selected'] = Aulas.objects.get(id=aula)
 
         ent= self.request.GET.get("entidad")
         if ent:
             context['entidad_selected'] = Entidades.objects.get(id=ent)
+
+        fecha_ini= self.request.GET.get("fecha_inicio")
+        fecha_fi= self.request.GET.get("fecha_fin")
+        if fecha_ini and fecha_fi:
+            context['f_inicio'] = fecha_ini
+            context['f_fin'] = fecha_fi
         
         return context
     
@@ -181,10 +187,21 @@ class EventosList(ListView):
         if ent:
             query= query.filter(entidad_id=ent)
 
+        fecha_inicio= self.request.GET.get('fecha_inicio')
+        fecha_fin= self.request.GET.get('fecha_fin')
+
+        if (fecha_inicio and fecha_fin):
+            #print('busq x fechas')
+            fecha_inicio=datetime.datetime.strptime(fecha_inicio, "%Y-%m-%d")
+            fecha_fin=datetime.datetime.strptime(fecha_fin, "%Y-%m-%d")
+            
+            query= query.filter(start_time__gte=fecha_inicio, end_time__lte=fecha_fin)
         return query
 
     def post(self, request, *args, **kwargs):
         aula_id = request.POST.get('aula', None)
         entidad_id = request.POST.get('entidad', None)
+        fecha_ini = request.POST.get('fecha_inicio', None)
+        fecha_fi = request.POST.get('fecha_fin', None)
 
-        return HttpResponseRedirect('/eventos/reservas?aula='+str(aula_id)+'&entidad='+str(entidad_id))
+        return HttpResponseRedirect('/eventos/reservas?fecha_inicio='+str(fecha_ini)+'&fecha_fin='+str(fecha_fi)+'&aula='+str(aula_id)+'&entidad='+str(entidad_id))
