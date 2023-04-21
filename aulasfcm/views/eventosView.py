@@ -134,3 +134,57 @@ class EventCreate(CreateView):
         #redirect exitoso
         messages.success(self.request,('Evento dado de alta exitosamente!'))
         return HttpResponseRedirect('/eventos/crear')
+
+class EventosListResponse(ListView):
+    model = Event
+    paginate_by = 10
+
+    ordering = ['-id']
+    template_name = 'eventos/reservas.html'
+
+
+class EventosList(ListView):
+    model = Event
+    paginate_by = 10
+    #context_object_name = 'event'
+    #template_name = 'eventos/reservas.html'
+    
+
+    ordering = ['id',]
+
+    def get_context_data(self, **kwargs):
+        context = super(EventosList, self).get_context_data(**kwargs) # GET de la data default del contexto
+        #Agrego elementos a la request para motrar en la view
+        context['aulas'] = Aulas.objects.all()
+        context['entidades'] = Entidades.objects.all()
+
+        aula= self.request.GET.get("aula")
+        if aula:
+            print(aula)
+            context['aula_selected'] = Aulas.objects.get(id=aula)
+
+        ent= self.request.GET.get("entidad")
+        if ent:
+            context['entidad_selected'] = Entidades.objects.get(id=ent)
+        
+        return context
+    
+    def get_queryset(self):
+        query= None
+        aula= self.request.GET.get('aula')
+        if aula:
+            query= Event.objects.filter(aula_id=aula).order_by('-id')
+        else:
+            query= Event.objects.all().order_by('-id')
+
+        ent = self.request.GET.get('entidad')
+        if ent:
+            query= query.filter(entidad_id=ent)
+
+        return query
+
+    def post(self, request, *args, **kwargs):
+        aula_id = request.POST.get('aula', None)
+        entidad_id = request.POST.get('entidad', None)
+
+        return HttpResponseRedirect('/eventos/reservas?aula='+str(aula_id)+'&entidad='+str(entidad_id))
