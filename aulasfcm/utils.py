@@ -10,6 +10,9 @@ class Calendar(HTMLCalendar):
 
     def format_time_popover(self, hora):
         return hora.strftime("%H:%M")
+    
+    def format_time_evento(self,hora):
+        return hora.strftime("%H")
 
     # formats a day as a td
     # filter events by day
@@ -17,7 +20,7 @@ class Calendar(HTMLCalendar):
         events_per_day = events.filter(start_time__day=day)
         d = ''
         for event in events_per_day: # Caja del evento en el calendario
-            d += f'<li data-toggle="popover" title="<b>{event.entidad.nombre}</b>" data-content="<b>Hora inicio:</b> {self.format_time_popover(event.start_time)}<br/> <b>Hora fin:</b> {self.format_time_popover(event.end_time)}</br> <b>Descripción:</b> {event.description}" data-html="true" style="list-style-type:none;border-radius: 3px;background: #96d4b6;margin-bottom:1px;cursor: pointer;"> {event.entidad.nombre} </li>'
+            d += f'<li data-toggle="popover" title="<b>{event.entidad.nombre}</b>" data-content="<b>Hora inicio:</b> {self.format_time_popover(event.start_time)}<br/> <b>Hora fin:</b> {self.format_time_popover(event.end_time)}</br> <b>Descripción:</b> {event.description}" data-html="true" style="list-style-type:none;border-radius: 3px;background: #96d4b6;margin-bottom:1px;cursor: pointer;"><b>{self.format_time_evento(event.start_time)}</b> {event.entidad.nombre} </li>'
         
         if day != 0:
             if (act and day==datetime.now().date().day):
@@ -38,7 +41,7 @@ class Calendar(HTMLCalendar):
     def formatmonth(self, withyear=True, aula=None):
         events = Event.objects.filter(start_time__year=self.year, start_time__month=self.month)
         if (aula):
-            events = events.filter(aula_id=aula) #filtro por AULA
+            events = events.filter(aula_id=aula).order_by('start_time') #filtro por AULA
         else:
             events = Event.objects.none()
         
