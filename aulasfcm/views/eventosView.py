@@ -20,7 +20,10 @@ class EventCreate(CreateView):
 
     def get_context_data(self, **kwargs):
         context = super(EventCreate, self).get_context_data(**kwargs) # GET de la data default del contexto
-        context['edificios'] = Edificios.objects.filter(gestores__id=(self.request.user.id)).order_by('id')
+        if (self.request.user.is_superuser):
+            context['edificios'] = Edificios.objects.all().order_by('id')
+        else:
+            context['edificios'] = Edificios.objects.filter(gestores__id=(self.request.user.id)).order_by('id')
         context['aulas'] = Aulas.objects.filter(edificio_id__in=context['edificios']).order_by('edificio_id','nombre') # Agrego edificio seleccionado al contexto
         context['entidades'] = Entidades.objects.all().order_by('nombre') 
 
@@ -104,7 +107,7 @@ class EventCreate(CreateView):
 
                 # checkeo colision de horario
                 if (colisiones_l.count() >0):
-                    messages.error(self.request,'No se pudo dar de alta el evento ya que colisiona con otro: '+(colisiones_l.first().title))
+                    messages.error(self.request,'No se pudo dar de alta el evento ya que colisiona con otro: '+(colisiones_l.first().entidad.nombre))
                     return HttpResponseRedirect('/eventos/crear')
 
                 fecha_base += datetime.timedelta(weeks=1) #siguiente lunes
@@ -122,7 +125,7 @@ class EventCreate(CreateView):
             ##print("Alta- una vuelta mas: "+str(actual.weekday())+"  -  " + str(actual))
             if ((actual.weekday()) in (dias_elegidos)):  #si el día actual esta en los dias elegidos
                 ##print('^ Este día fue elegido.')
-                evento_nuevo= Event.objects.create(title=form.data['title'],description=form.data['description'],entidad_id=form.data['entidades'],aula_id=aula,start_time=(actual.replace(hour=(hora_inicio.hour), minute=(hora_inicio.minute))),end_time=(actual.replace(hour=(hora_fin.hour), minute=(hora_fin.minute))))  #creo el evento (fecha: actual. horario: del form.)
+                evento_nuevo= Event.objects.create(description=form.data['description'],entidad_id=form.data['entidades'],aula_id=aula,start_time=(actual.replace(hour=(hora_inicio.hour), minute=(hora_inicio.minute))),end_time=(actual.replace(hour=(hora_fin.hour), minute=(hora_fin.minute))))  #creo el evento (fecha: actual. horario: del form.)
                 if (evento_ant):
                     evento_ant.siguiente_id= evento_nuevo.id
                     evento_ant.save()
@@ -172,6 +175,9 @@ class EventosList(ListView):
         if fecha_ini and fecha_fi:
             context['f_inicio'] = fecha_ini
             context['f_fin'] = fecha_fi
+
+        #Agrego edifs que administra para validar en la view
+        context['permitidos']= ((Edificios.objects.filter(gestores__id=(self.request.user.id)))).values_list('id', flat=True)
         
         return context
     

@@ -34,8 +34,13 @@
                     <a class="nav-link" href="/calendario">Calendario</a>
                 </li>
 
-                <li class="nav-item">
-                    <a class="nav-link" href="/eventos/reservas">Consultas</a>
+                <li class="dropdown"> <!-- Dropdown de administracion -->
+                    <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="true"> Consultas <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a style="margin-left:10;color:#4d6b93" href="/eventos/reservas">Reservas</a></li>
+                        <hr class="my-1" />
+                        <li><a style="margin-left:10;color:#4d6b93" href="#">Horarios libres</a></li>
+                    </ul>
                 </li>
 
                 <!-- Menu usuarios -->
@@ -45,11 +50,11 @@
                     <ul class="dropdown-menu">
                         <li><a style="margin-left:10;color:#4d6b93" href="/entidades">Entidades</a></li>
                         {% if request.user.is_superuser %}
-                            <hr class="my-2"/> <!-- Separadores del dropdown -->
+                            <hr class="my-1"/> <!-- Separadores del dropdown -->
                             <li><a style="margin-left:10;color:#4d6b93" href="/edificios">Edificios</a></li>
-                            <hr class="my-2"/>
+                            <hr class="my-1"/>
                             <li><a style="margin-left:10;color:#4d6b93" href="/aulas">Aulas</a></li>
-                            <hr class="my-2" />
+                            <hr class="my-1" />
                             <li><a style="margin-left:10;color:#4d6b93" href="#">Usuarios</a></li>
                         {% endif %}
 
