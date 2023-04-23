@@ -211,3 +211,105 @@ class EventosList(ListView):
         fecha_fi = request.POST.get('fecha_fin', None)
 
         return HttpResponseRedirect('/eventos/reservas?fecha_inicio='+str(fecha_ini)+'&fecha_fin='+str(fecha_fi)+'&aula='+str(aula_id)+'&entidad='+str(entidad_id))
+
+
+class EventoDelete(PermissionRequiredMixin, SuccessMessageMixin, DeleteView):
+    model = Event
+    #form = Aulas
+    fields = "__all__"
+    permission_required = 'delete_event'
+
+    def get(self,aux,pk):
+        evento= Event.objects.get(id=pk)
+
+        if (evento): #si existe
+            if (evento.siguiente_id==None):
+                #es el último o era un evento único
+                evento.delete()
+            else:
+                #tiene siguiente
+                evento_previo=None
+                try:
+                    evento_previo=Event.objects.get(siguiente_id=pk)
+                except Exception as e:
+                    pass
+    
+                if evento_previo:
+                    evento_previo.siguiente_id=evento.siguiente_id
+                    evento_previo.save()
+                    evento.delete()
+
+                else:
+                    evento.delete()
+
+        messages.success(self.request,('Reserva dada de baja exitosamente!'))
+        return HttpResponseRedirect(self.request.META.get('HTTP_REFERER')) #recargo pag de gestores base
+
+class EventosDelete(PermissionRequiredMixin, SuccessMessageMixin, DeleteView):
+    model = Event
+    #form = Aulas
+    fields = "__all__"
+    permission_required = 'delete_event'
+
+    def get(self,aux,pk):
+        evento= Event.objects.get(id=pk)
+
+        if (evento): #si existe
+            if (evento.siguiente_id==None):
+
+                evento_previo=None
+                try:
+                    evento_previo=Event.objects.get(siguiente_id=pk)
+                except Exception as e:
+                    pass
+
+                if not evento_previo: #si era un evento único
+                    evento.delete()
+
+                else: #es el último de una lista
+                    eventos=[]
+                    eventos.append(evento) #guardo el evento act (el ultimo)
+                    hay_anterior=True
+
+                    while hay_anterior:
+                        eventos.append(evento_previo) #guardo el evento ant en la lista
+                        try:
+                            evento_previo=Event.objects.get(siguiente_id=evento_previo.id)
+                        except Exception as e:
+                            hay_anterior=False
+
+                    for evento in eventos: #borrado
+                        evento.delete()
+
+            else:
+                evento_previo= None
+                try:
+                    evento_previo=Event.objects.get(siguiente_id=pk)
+                except Exception as e:
+                    pass
+
+                eventos=[]
+                eventos.append(evento) #guardo el evento act (el ultimo)
+                hay_anterior=True
+
+                #guardo los ants
+                while hay_anterior:
+                    eventos.append(evento_previo) #guardo el evento ant en la lista
+                    try:
+                        evento_previo=Event.objects.get(siguiente_id=evento_previo.id)
+                    except Exception as e:
+                        hay_anterior=False
+
+                #guardo los siguientes
+                while (evento.siguiente_id != None):
+                    eventos.append(evento)
+                    evento=Event.objects.get(id=evento.siguiente_id)
+                eventos.append(evento)
+
+                eventos=list(set(eventos))
+                for evento in eventos: #borrado
+                    evento.delete()
+
+        messages.success(self.request,('Reservas dadas de baja exitosamente!'))
+        return HttpResponseRedirect(self.request.META.get('HTTP_REFERER')) #recargo pag de gestores base
+
