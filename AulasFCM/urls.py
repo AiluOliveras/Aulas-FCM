@@ -19,7 +19,7 @@ from django.contrib.auth.views import LoginView, LogoutView
 from aulasfcm.views import AulasCreate,AulasDelete,AulasDetail,AulasList,AulasUpdate, EdificiosCreate, EdificiosDelete, EdificiosDetail, EdificiosList, EdificiosUpdate
 from aulasfcm.views import EntidadesCreate, EntidadesDelete, EntidadesDetail, EntidadesList, EntidadesUpdate
 from aulasfcm.views import PasswordChangeView, CustomPasswordChangeView, UsuariosUpdate, CustomUsuariosUpdate
-from aulasfcm.views import GestoresList, destroy_gestor_edificio, create_gestor_edificio, UsuariosList, CalendarView, EventCreate, EventosList, EventoDelete, EventosDelete
+from aulasfcm.views import GestoresList, destroy_gestor_edificio, create_gestor_edificio, UsuariosList, CalendarView, EventCreate, EventosList, EventoDelete, EventosDelete, HorariosLibresList
 from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.auth import views as auth_views
 
@@ -47,6 +47,7 @@ urlpatterns = [
     path('entidades/eliminar/<int:pk>', login_required(EntidadesDelete.as_view())),
 
     path('eventos/crear', login_required(EventCreate.as_view(template_name = "eventos/crear.html"))),
+    path('eventos/horarios_libres', HorariosLibresList.as_view(template_name = "eventos/horarios_libres.html"), name='horarios_libres'),
     path('eventos/reservas', EventosList.as_view(template_name = "eventos/reservas.html"), name='reservas'),
     path('eventos/eliminar/<int:pk>', login_required(EventoDelete.as_view())),
     path('eventos/eliminar_todo/<int:pk>', login_required(EventosDelete.as_view())),

@@ -313,3 +313,95 @@ class EventosDelete(PermissionRequiredMixin, SuccessMessageMixin, DeleteView):
         messages.success(self.request,('Reservas dadas de baja exitosamente!'))
         return HttpResponseRedirect(self.request.META.get('HTTP_REFERER')) #recargo pag de gestores base
 
+class HorariosLibresList(ListView):
+    model = Event
+    #context_object_name = 'event'
+    #template_name = 'eventos/reservas.html'
+    
+
+    ordering = ['id',]
+
+    def date_front_format(self, adate):
+        x=["Lunes","Martes","Miércoles","Jueves","Viernes","Sábado","Domingo"]
+        return adate.strftime(x[adate.weekday()]+' '+'%d/%m/%Y, %I:%M %P.')
+
+    def get_context_data(self, **kwargs):
+        context = super(HorariosLibresList, self).get_context_data(**kwargs) # GET de la data default del contexto
+        #Agrego elementos a la request para motrar en la view
+        context['aulas'] = Aulas.objects.all()
+
+        aula= self.request.GET.get("aula")
+        if aula:
+            context['aula_selected'] = Aulas.objects.get(id=aula)
+
+        fecha_ini= self.request.GET.get("fecha_inicio")
+        fecha_fi= self.request.GET.get("fecha_fin")
+        if fecha_ini and fecha_fi:
+            context['f_inicio'] = fecha_ini
+            context['f_fin'] = fecha_fi
+
+        #get eventos en el rango dado y ordenarlos por fecha de inicio
+        eventos_list=None
+        if (fecha_ini and fecha_fi):
+            
+            fecha_ini=datetime.datetime.strptime(fecha_ini, "%Y-%m-%d")
+            fecha_fi=datetime.datetime.strptime(fecha_fi, "%Y-%m-%d")
+            
+            eventos_list=Event.objects.filter(aula_id=aula).order_by('start_time')
+            eventos_list= eventos_list.filter(start_time__gte=fecha_ini, end_time__lte=fecha_fi)
+
+            evento_ant=None
+            data=[]
+            libres=[]
+            if eventos_list != None:
+                #hay eventos
+                for evento in eventos_list:
+                    if evento_ant != None:
+                        #calculo minutos entre el evento anterior y este
+                        aux= evento.start_time- evento_ant.end_time
+                        minutes = aux.total_seconds() / 60
+                        
+                        #si el tiempo es mayor a 40min
+                        if minutes>40:
+                            #lo agrego como horario libre
+                            data.append(str(self.date_front_format(evento_ant.end_time)))
+                            data.append(str(self.date_front_format(evento.start_time)))
+
+                    else:
+                        #es el primero
+                        data.append(str(self.date_front_format(fecha_ini)))
+                        data.append(str(self.date_front_format(evento.start_time)))
+                    
+                    evento_ant=evento
+                    if (data!=[]):
+                        libres.append(data)
+                    data=[]
+                
+                #sumo el tiempo e/ el ultimo evento y el final
+                if evento_ant:
+                    aux= fecha_fi - evento_ant.end_time
+                    minutes = aux.total_seconds() / 60
+                        
+                    #si el tiempo es mayor a 40min
+                    if minutes>40:
+                        #lo agrego como horario libre
+                        data.append(str(self.date_front_format(evento_ant.end_time)))
+                        data.append(str(self.date_front_format(fecha_fi)))
+                        libres.append(data)
+
+
+            else:
+                #no hay eventos, todo libre
+                data.append(str(self.date_front_format(fecha_ini)))
+                data.append(str(self.date_front_format(fecha_fi)))
+            
+            context['horarios_libres']=libres
+
+        return context
+
+    def post(self, request, *args, **kwargs):
+        aula_id = request.POST.get('aula', None)
+        fecha_ini = request.POST.get('fecha_inicio', None)
+        fecha_fi = request.POST.get('fecha_fin', None)
+
+        return HttpResponseRedirect('/eventos/horarios_libres?fecha_inicio='+str(fecha_ini)+'&fecha_fin='+str(fecha_fi)+'&aula='+str(aula_id))

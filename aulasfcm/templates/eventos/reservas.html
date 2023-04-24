@@ -69,7 +69,7 @@
                 <!-- DROPDOWN AULAS -->
                 <div class="form-group"> <!-- Dropdown de aulas -->
                     <label for="aulas" style="font-weight:bold;" class="control-label">Aula: </label>
-                    <select class="form-control" name="aula">
+                    <select class="form-control" name="aula" style="width:230px;">
                         {% if not aula_selected %}
                             <option hidden selected value> -- Seleccione aula -- </option>
                             {% for a in aulas %}
@@ -197,8 +197,8 @@
                 </span>
             </div>
         {% else %}
-            <div class="pagination" style="font-weight:bold;width: 100%; text-align: center;display: inline-block;">
-            ...</div>
+            <div class="pagination" style="color: gray;width: 100%; text-align: center;display: inline-block;">
+            ( Seleccione rango de fechas para ver mas reservas )</div>
             
         {% endif %}
     </body>
