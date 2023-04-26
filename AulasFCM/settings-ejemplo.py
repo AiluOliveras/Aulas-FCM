@@ -55,6 +55,8 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'AulasFCM.urls'
 
+#CSRF_TRUSTED_ORIGINS=['https://*.YOUR_DOMAIN.COM']
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',

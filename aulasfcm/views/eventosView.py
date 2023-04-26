@@ -213,11 +213,10 @@ class EventosList(ListView):
         return HttpResponseRedirect('/eventos/reservas?fecha_inicio='+str(fecha_ini)+'&fecha_fin='+str(fecha_fi)+'&aula='+str(aula_id)+'&entidad='+str(entidad_id))
 
 
-class EventoDelete(PermissionRequiredMixin, SuccessMessageMixin, DeleteView):
+class EventoDelete(SuccessMessageMixin, DeleteView):
     model = Event
-    #form = Aulas
     fields = "__all__"
-    permission_required = 'delete_event'
+    #permission_required = 'delete_event'
 
     def get(self,aux,pk):
         evento= Event.objects.get(id=pk)
@@ -245,11 +244,9 @@ class EventoDelete(PermissionRequiredMixin, SuccessMessageMixin, DeleteView):
         messages.success(self.request,('Reserva dada de baja exitosamente!'))
         return HttpResponseRedirect(self.request.META.get('HTTP_REFERER')) #recargo pag de gestores base
 
-class EventosDelete(PermissionRequiredMixin, SuccessMessageMixin, DeleteView):
+class EventosDelete(SuccessMessageMixin, DeleteView):
     model = Event
-    #form = Aulas
     fields = "__all__"
-    permission_required = 'delete_event'
 
     def get(self,aux,pk):
         evento= Event.objects.get(id=pk)
