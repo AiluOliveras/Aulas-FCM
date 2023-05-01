@@ -74,18 +74,12 @@ class EventCreate(CreateView):
         ##print(dias_elegidos)
         # si no eligió dias, retorno error
         if (not dias_elegidos):
-            messages.error(self.request,'Debe seleccionar almenos una opción en el apartado "Frecuencia".')
+            messages.error(self.request,'ERROR: Debe seleccionar almenos una opción en el apartado "Frecuencia".')
             return HttpResponseRedirect('/eventos/crear')
 
-        ####VALIDA SI ES ALTA ÚNICA O REPETITIVA
-        repetir=False
-        try:
-            repetir= form.data['repetir']
-            #print('se repite')
-        except Exception as e:
-            repetir=False
-            #print('no se repite')
-        
+        if (fecha_inicio > fecha_fin):
+            messages.error(self.request,'ERROR: La fecha de inicio debe ser menor o igual a la fecha de fin.')
+            return HttpResponseRedirect('/eventos/crear')
 
         ###checkear colisiones de eventos (OVERLAP)###
         eventos= Event.objects.filter(aula_id=aula) # filtrar eventos en esta aula
@@ -107,7 +101,7 @@ class EventCreate(CreateView):
 
                 # checkeo colision de horario
                 if (colisiones_l.count() >0):
-                    messages.error(self.request,'No se pudo dar de alta el evento ya que colisiona con otro: '+(colisiones_l.first().entidad.nombre))
+                    messages.error(self.request,'ERROR: No se pudo dar de alta el evento ya que colisiona con otro: '+(colisiones_l.first().entidad.nombre))
                     return HttpResponseRedirect('/eventos/crear')
 
                 fecha_base += datetime.timedelta(weeks=1) #siguiente lunes
