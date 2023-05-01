@@ -10,6 +10,13 @@
         {# Archivos #}
         {% load static %}
 
+        <style>
+            .btn-primary{
+                background-color:#068E73;
+                border-color: #068E73;
+            }
+        </style>
+
     </head>
 
     <body>
@@ -59,7 +66,7 @@
                         <!-- No necesita botón de alta -->
                         <a style="cursor: not-allowed;" type="button" class="btn btn-secondary">Es administrador</a> 
                     {% else %}
-                        <a href="crear?gestor={{ user.id }}&edificio={{ edificio_obj.id }}" onclick="return agregar('{{user.username}}','{{edificio_obj.nombre}}');" title="AgregarGestorEdificio" type="button" class="btn btn-info">Agregar como gestor</a> 
+                        <a href="crear?gestor={{ user.id }}&edificio={{ edificio_obj.id }}" onclick="return agregar('{{user.username}}','{{edificio_obj.nombre}}');" type="button" class="btn btn-info">Agregar como gestor</a> 
                     {% endif %}
                 </td>
             </tr>

@@ -37,6 +37,16 @@
             .btn-info{
                 background-color: #09cca6;
             }
+
+            .btn-primary{
+                background-color:#068E73;
+                border-color: #068E73;
+            }
+
+            .btn-primary{
+                background-color:#068E73;
+                border-color: #068E73;
+            }
   
         </style>
     </head>
@@ -155,7 +165,7 @@
                 <td>{{e.dia_start}} {{ e.start_time | date:"d/m/Y" }}, {{e.start_time|time:"h:i a"}}</td>
                 <td>{{e.dia_end}} {{ e.end_time | date:"d/m/Y" }}, {{e.end_time|time:"h:i a"}}</td>
                 <td>
-                    <a class="btn-sm btn-info right-crear" data-toggle="popover" title="{{e.entidad.nombre}}" data-content="<b>Descripción: </b> {{e.description}} </br> <b>Aula: </b> {{e.aula.nombre}}" data-html="true" style="cursor:pointer; text-decoration: none;margin-right: 15%;"> + Info </a>
+                    <a class="btn-sm btn-primary right-crear" data-toggle="popover" title="{{e.entidad.nombre}}" data-content="<b>Descripción: </b> {{e.description}} </br> <b>Aula: </b> {{e.aula.nombre}}" data-html="true" style="cursor:pointer; text-decoration: none;margin-right: 15%;"> + Info </a>
                     {% if user.is_authenticated %}
                     <!-- Botones de borrado -->
                         {% if user.is_superuser %}
@@ -216,7 +226,7 @@
             </div>
         {% else %}
             <div class="pagination" style="color: gray;width: 100%; text-align: center;display: inline-block;">
-            ( Seleccione rango de fechas para ver mas reservas )</div>
+            ( Seleccione rango de fechas y otros parámetros para ver mas reservas )</div>
             
         {% endif %}
     </body>

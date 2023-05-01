@@ -9,14 +9,29 @@
         {# Archivos #}
         {% load static %}
 
+        <style>
+            .btn-info{
+                border-color:#09cca6;
+                background-color: #09cca6;
+            }
+
+            .btn-primary{
+                background-color:#068E73;
+                border-color: #068E73;
+            }
+        </style>
+
     </head>
 
     <body>
         {# JS y jquery bootstrap #}
         {% bootstrap_javascript jquery='full' %}
 
-        <div allign="left" class="btn_crear mb-3">
-            <a href="crear" type="button" class="btn btn-primary">Crear</a>
+        <div style="display:flex; flex-direction: row; justify-content: space-between; align-items:center">
+            <h2 style="margin-left:1%;">Edificios </h2>
+            <div allign="left" class="btn_crear mb-2" style="margin-right: 1%;">
+                <a href="crear" type="button" class="btn btn-primary">Crear</a>
+            </div>
         </div>
 
         <!-- Confirmación de operación exitosa -->
@@ -50,7 +65,7 @@
                         <div class="btn-group">
             
                         <!-- Botones:  Ver, Editar y Eliminar -->
-                        <a href="detalle/{{edificio.id}}" title="Ver" type="button" class="btn btn-success">Ver </a>
+                        <a href="detalle/{{edificio.id}}" title="Ver" type="button" class="btn btn-info">Ver </a>
                         <a href="editar/{{edificio.id}}" title="Editar" type="button" class="btn btn-primary">Editar </a>
                         <button class="btn btn-danger" onclick="return eliminar('{{edificio.nombre}}');" type="submit">
                             Eliminar

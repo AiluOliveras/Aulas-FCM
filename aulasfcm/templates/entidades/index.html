@@ -9,6 +9,18 @@
         {# Archivos #}
         {% load static %}
 
+        <style>
+            .btn-info{
+                border-color:#09cca6;
+                background-color: #09cca6;
+            }
+
+            .btn-primary{
+                background-color:#068E73;
+                border-color: #068E73;
+            }
+        </style>
+
     </head>
 
     <body>
@@ -17,18 +29,20 @@
 
         <!-- Div c/ create + búsqueda-->
         <div style="display:flex; flex-direction: row; justify-content: space-between; align-items:center">
-            <div class="btn_crear mb-3">
-                <a href="crear" type="button" class="btn btn-primary">Crear</a>
-            </div>
+            <h2 style="margin-left:1%;">Entidades </h2>
 
             <!-- Barra de búsqueda -->
             <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
             <form method="GET" action="" id="searchform">
                 <input class="searchfield" style="outline: none;" id="searchbox" name="nombre" type="text" value="{{ request.GET.nombre }}" placeholder="Buscar..."/>
-                <button class="btn btn-primary" style="height: 34;" type="submit">
+                <button class="btn-sm btn-primary" style="height: 34;" type="submit">
                     <i class="fa fa-search"></i>
                 </button>
             </form>
+
+            <div class="btn_crear mb-2" style="margin-right:1%;">
+                <a href="crear" type="button" class="btn btn-primary">Crear</a>
+            </div>
         </div>
 
         <!-- Confirmación de operación exitosa -->
@@ -71,7 +85,7 @@
                         <div class="btn-group">
             
                         <!-- Botones:  Ver, Editar y Eliminar -->
-                        <a href="detalle/{{ent.id}}" title="Ver" type="button" class="btn btn-success">Ver </a>
+                        <a href="detalle/{{ent.id}}" title="Ver" type="button" class="btn btn-info">Ver </a>
                         {% if request.user.is_superuser %}
                         <a href="editar/{{ent.id}}" title="Editar" type="button" class="btn btn-primary">Editar </a>
                         <button class="btn btn-danger" onclick="return eliminar('{{ent.nombre}}');" type="submit">
