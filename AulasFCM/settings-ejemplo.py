@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 
 from pathlib import Path
 import os
+from django.urls import reverse_lazy
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -26,7 +27,7 @@ SECRET_KEY = 'django-insecure-l1#**j%8+tof*)xaq*h@4r8s75-76#uxj9efl*p2s_f9ti2tzo
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['0.0.0.0','127.0.0.1']
 
 
 # Application definition
@@ -47,15 +48,16 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
-    #'django.middleware.csrf.CsrfViewMiddleware', #COMENTAR ESTO SI NO HAY LOGIN!
+    'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'aulasfcm.middlewares.middleware-fcm.simple_middleware'
 ]
 
 ROOT_URLCONF = 'AulasFCM.urls'
 
-#CSRF_TRUSTED_ORIGINS=['https://*.YOUR_DOMAIN.COM']
+CSRF_TRUSTED_ORIGINS=['https://127.0.0.1']
 
 TEMPLATES = [
     {
@@ -85,7 +87,7 @@ DATABASES = {
         'NAME': 'aulasfcm',
         'USER': 'nombre',
         'PASSWORD': 'pass',
-        'HOST': 'localhost',
+        'HOST': '127.0.0.1', #'127.0.0.1' para app, 'db' para docker
         'PORT': '3306',
     }
 }
