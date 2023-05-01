@@ -56,6 +56,8 @@ urlpatterns = [
     path('gestores/crear',login_required(create_gestor_edificio)), #pivot e/ gestores y edificios
 
     path('calendario/', CalendarView.as_view(), name='calendario'),
+    path('', CalendarView.as_view(), name='calendario'),
+    path('/', CalendarView.as_view(), name='calendario'),
 
     # Administracion del usuario/admin
     path('cambiar-clave/', login_required(PasswordChangeView.as_view(template_name='change-password.html',success_url="/cambiar-clave/exitoso")),name='cambiar-clave'),
