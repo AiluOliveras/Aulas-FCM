@@ -83,6 +83,7 @@ def create_gestor_edificio(request, *args, **kwargs):
             edificio_up.gestores.add(gestor_up)
 
             messages.success(request,('Gestor añadido exitosamente!'))
-            return HttpResponseRedirect('/edificios/gestores/?edificio='+edificio) #recargo pag de gestores base
+            #return HttpResponseRedirect('/edificios/gestores/?edificio='+edificio) #recargo pag de gestores base
+            return HttpResponseRedirect(f'/edificios/gestores/?edificio={edificio}') #recargo pag de gestores base
     
     return HttpResponse("Hubo un error, por favor regrese a la página anterior.")

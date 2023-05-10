@@ -210,8 +210,8 @@ class EventosList(ListView):
         fecha_ini = request.POST.get('fecha_inicio', None)
         fecha_fi = request.POST.get('fecha_fin', None)
 
-        return HttpResponseRedirect('/eventos/reservas?fecha_inicio='+str(fecha_ini)+'&fecha_fin='+str(fecha_fi)+'&aula='+str(aula_id)+'&entidad='+str(entidad_id))
-
+        #return HttpResponseRedirect('/eventos/reservas?fecha_inicio='+str(fecha_ini)+'&fecha_fin='+str(fecha_fi)+'&aula='+str(aula_id)+'&entidad='+str(entidad_id))
+        return HttpResponseRedirect(f'/eventos/reservas?fecha_inicio={str(fecha_ini)}&fecha_fin={str(fecha_fi)}&aula={str(aula_id)}&entidad={str(entidad_id)}')
 
 class EventoDelete(SuccessMessageMixin, DeleteView):
     model = Event
@@ -401,4 +401,5 @@ class HorariosLibresList(ListView):
         fecha_ini = request.POST.get('fecha_inicio', None)
         fecha_fi = request.POST.get('fecha_fin', None)
 
-        return HttpResponseRedirect('/eventos/horarios_libres?fecha_inicio='+str(fecha_ini)+'&fecha_fin='+str(fecha_fi)+'&aula='+str(aula_id))
+        #return HttpResponseRedirect('/eventos/horarios_libres?fecha_inicio='+str(fecha_ini)+'&fecha_fin='+str(fecha_fi)+'&aula='+str(aula_id))
+        return HttpResponseRedirect(f'/eventos/horarios_libres?fecha_inicio={str(fecha_ini)}&fecha_fin={str(fecha_fi)}&aula={str(aula_id)}')
