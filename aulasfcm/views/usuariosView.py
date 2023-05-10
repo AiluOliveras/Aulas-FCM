@@ -31,7 +31,10 @@ class UsuariosUpdate(UpdateView):
 
     def get_context_data(self, **kwargs):
         context = super(UsuariosUpdate, self).get_context_data(**kwargs) # GET de la data default
-        context['mail'] = (User.objects.get(id=self.request.user.id)).email # Agrego listado de edificios al contexto
+        try:
+            context['mail'] = (User.objects.get(id=self.request.user.id)).email # Agrego listado de edificios al contexto
+        except Exception as e:
+            raise Exception(f'Error agregando listado de edificios al contexto: {e}')
 
         return context
 
@@ -49,8 +52,10 @@ class CustomUsuariosUpdate(UpdateView):
 
     def get_context_data(self, **kwargs):
         context = super(CustomUsuariosUpdate, self).get_context_data(**kwargs) # GET de la data default
-        context['mail'] = (User.objects.get(id=self.request.user.id)).email # Agrego listado de edificios al contexto
-
+        try:
+            context['mail'] = (User.objects.get(id=self.request.user.id)).email # Agrego listado de edificios al contexto
+        except Exception as e:
+            raise Exception(f'Error agregando listado de edificios al contexto: {e}')
         return context
 
 class UsuariosList(ListView):
@@ -65,7 +70,10 @@ class UsuariosList(ListView):
         if filtro_edificio:
     
             edificio= self.request.GET.get('edificio_id')
-            edificio = Edificios.objects.get(id=edificio)
+            try:
+                edificio = Edificios.objects.get(id=edificio)
+            except Exception as e:
+                raise Exception(f'Error obteniendo edificios: {e}')
 
             #retorno users que no son gestores de este edificio
             gestores=[]
@@ -89,6 +97,9 @@ class UsuariosList(ListView):
         context['filtro_edificio'] = self.request.GET.get('filtro_edificio', 'None')
         edificio= self.request.GET.get('edificio_id')
 
-        context['edificio_obj'] = Edificios.objects.get(id=edificio) # Agrego edificio seleccionado al contexto
+        try:
+            context['edificio_obj'] = Edificios.objects.get(id=edificio) # Agrego edificio seleccionado al contexto
+        except Exception as e:
+            raise Exception(f'Error agregando edificio seleccionado al contexto: {e}')
 
         return context

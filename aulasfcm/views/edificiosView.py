@@ -73,9 +73,12 @@ def destroy_gestor_edificio(request, *args, **kwargs):
         if edificio and gestor:
 
             #se elimina permiso del gestor sobre el edificio dado
-            edificio_up = Edificios.objects.get(id=edificio)
-            gestor_up = User.objects.get(id=gestor)
-            edificio_up.gestores.remove(gestor_up)
+            try:
+                edificio_up = Edificios.objects.get(id=edificio)
+                gestor_up = User.objects.get(id=gestor)
+                edificio_up.gestores.remove(gestor_up)
+            except Exception as e:
+                raise Exception(f'Error al eliminar permiso del gestor sobre el edificio dado: {e}')
 
             messages.success(request,('Gestor dado de baja exitosamente!'))
             return HttpResponseRedirect(request.META.get('HTTP_REFERER')) #recargo pag de gestores base
@@ -106,9 +109,12 @@ def create_gestor_edificio(request, *args, **kwargs):
             #checkear que no exista ya la unión
 
             #se agrega permiso del gestor sobre el edificio dado
-            edificio_up = Edificios.objects.get(id=edificio)
-            gestor_up = User.objects.get(id=gestor)
-            edificio_up.gestores.add(gestor_up)
+            try:
+                edificio_up = Edificios.objects.get(id=edificio)
+                gestor_up = User.objects.get(id=gestor)
+                edificio_up.gestores.add(gestor_up)
+            except Exception as e:
+                raise Exception(f'Error al agregar permiso del gestor sobre el edificio dado: {e}')
 
             messages.success(request,('Gestor añadido exitosamente!'))
             #return HttpResponseRedirect('/edificios/gestores/?edificio='+edificio) #recargo pag de gestores base Ants

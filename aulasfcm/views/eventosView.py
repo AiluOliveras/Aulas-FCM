@@ -20,13 +20,15 @@ class EventCreate(CreateView):
 
     def get_context_data(self, **kwargs):
         context = super(EventCreate, self).get_context_data(**kwargs) # GET de la data default del contexto
-        if (self.request.user.is_superuser):
-            context['edificios'] = Edificios.objects.all().order_by('id')
-        else:
-            context['edificios'] = Edificios.objects.filter(gestores__id=(self.request.user.id)).order_by('id')
-        context['aulas'] = Aulas.objects.filter(edificio_id__in=context['edificios']).order_by('edificio_id','nombre') # Agrego edificio seleccionado al contexto
-        context['entidades'] = Entidades.objects.all().order_by('nombre') 
-
+        try:
+            if (self.request.user.is_superuser):
+                context['edificios'] = Edificios.objects.all().order_by('id')
+            else:
+                context['edificios'] = Edificios.objects.filter(gestores__id=(self.request.user.id)).order_by('id')
+            context['aulas'] = Aulas.objects.filter(edificio_id__in=context['edificios']).order_by('edificio_id','nombre') # Agrego edificio seleccionado al contexto
+            context['entidades'] = Entidades.objects.all().order_by('nombre') 
+        except Exception as e:
+            raise Exception(f'Error al recuperar datos del contexto: {e}')
         return context
 
     def get_success_url(self):
@@ -100,7 +102,7 @@ class EventCreate(CreateView):
                 form.data[str(d)]
                 dias_elegidos.append(x)
             except Exception as e:
-                pass #no está elegido ese día
+                raise Exception(f'no está elegido ese día: {e}') #no está elegido ese día
 
         ##print(dias_elegidos)
         # si no eligió dias, retorno error
@@ -157,7 +159,10 @@ class EventCreate(CreateView):
             ##print("Alta- una vuelta mas: "+str(actual.weekday())+"  -  " + str(actual))
             if ((actual.weekday()) in (dias_elegidos)):  #si el día actual esta en los dias elegidos
                 ##print('^ Este día fue elegido.')
-                evento_nuevo= Event.objects.create(description=form.data['description'],entidad_id=form.data['entidades'],aula_id=aula,start_time=(actual.replace(hour=(hora_inicio.hour), minute=(hora_inicio.minute))),end_time=(actual.replace(hour=(hora_fin.hour), minute=(hora_fin.minute))))  #creo el evento (fecha: actual. horario: del form.)
+                try:
+                    evento_nuevo= Event.objects.create(description=form.data['description'],entidad_id=form.data['entidades'],aula_id=aula,start_time=(actual.replace(hour=(hora_inicio.hour), minute=(hora_inicio.minute))),end_time=(actual.replace(hour=(hora_fin.hour), minute=(hora_fin.minute))))  #creo el evento (fecha: actual. horario: del form.)
+                except Exception as e:
+                    raise Exception(f'Error al crear evento: {e}')
                 if (evento_ant):
                     evento_ant.siguiente_id= evento_nuevo.id
                     evento_ant.save()
@@ -196,11 +201,17 @@ class EventosList(ListView):
         aula= self.request.GET.get('aula')
         if aula:
             #print(aula)
-            context['aula_selected'] = Aulas.objects.get(id=aula)
+            try:
+                context['aula_selected'] = Aulas.objects.get(id=aula)
+            except Exception as e:
+                raise Exception(f'Error al recuperar las aulas: {e}')
 
         ent= self.request.GET.get('entidad')
         if ent:
-            context['entidad_selected'] = Entidades.objects.get(id=ent)
+            try:
+                context['entidad_selected'] = Entidades.objects.get(id=ent)
+            except Exception as e:
+                raise Exception(f'Error al recuperar las entidades: {e}')
 
         fecha_ini= self.request.GET.get('fecha_inicio')
         fecha_fi= self.request.GET.get('fecha_fin')
@@ -209,8 +220,10 @@ class EventosList(ListView):
             context['f_fin'] = fecha_fi
 
         #Agrego edifs que administra para validar en la view
-        context['permitidos']= ((Edificios.objects.filter(gestores__id=(self.request.user.id)))).values_list('id', flat=True)
-        
+        try:
+            context['permitidos']= ((Edificios.objects.filter(gestores__id=(self.request.user.id)))).values_list('id', flat=True)
+        except Exception as e:
+                raise Exception(f'Error al recuperar los edificios: {e}')
         return context
     
     def get_queryset(self):
@@ -404,7 +417,10 @@ class HorariosLibresList(ListView):
 
         aula= self.request.GET.get('aula')
         if aula:
-            context['aula_selected'] = Aulas.objects.get(id=aula)
+            try:
+                context['aula_selected'] = Aulas.objects.get(id=aula)
+            except Exception as e:
+                raise Exception(f'Error al recuperar los edificios: {e}')
 
         fecha_ini= self.request.GET.get('fecha_inicio')
         fecha_fi= self.request.GET.get('fecha_fin')

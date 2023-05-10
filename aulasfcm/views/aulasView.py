@@ -26,7 +26,14 @@ class AulasCreate(PermissionRequiredMixin, SuccessMessageMixin, CreateView):
 
     def get_context_data(self, **kwargs):
         context = super(AulasCreate, self).get_context_data(**kwargs) # GET de la data default del contexto
-        context['edificios'] = Edificios.objects.all() # Agrego listado de edificios al contexto
+        #context['edificios'] = Edificios.objects.all() # Agrego listado de edificios al contexto
+        #return context
+        try:
+            context['edificios'] = Edificios.objects.all()
+        except Exception as e:
+            # manejar la excepción aquí, por ejemplo:
+            context['edificios'] = []
+            raise Exception(f'Error al recuperar los objetos de Edificios: {e}')
         return context
 
 class AulasDetail(DetailView):
@@ -41,9 +48,19 @@ class AulasUpdate(PermissionRequiredMixin, SuccessMessageMixin, UpdateView):
     def get_success_url(self):
         return reverse('aulas')
 
-    def get_context_data(self, **kwargs):
-        context = super(AulasUpdate, self).get_context_data(**kwargs) # GET de la data default
-        context['edificios'] = Edificios.objects.all() # Agrego listado de edificios al contexto
+    #def get_context_data(self, **kwargs):
+        #context = super(AulasUpdate, self).get_context_data(**kwargs) # GET de la data default
+        #context['edificios'] = Edificios.objects.all() # Agrego listado de edificios al contexto
+        #return context
+    
+    def get_context_data(self, kwargs):
+        context = super(AulasUpdate, self).get_context_data(kwargs)
+        try:
+            context['edificios'] = Edificios.objects.all()
+        except Exception as e:
+            # manejar la excepción aquí, por ejemplo:
+            context['edificios'] = []
+            raise Exception(f'Error al recuperar los objetos de Edificios: {e}')
         return context
 
 class AulasDelete(PermissionRequiredMixin, SuccessMessageMixin, DeleteView):

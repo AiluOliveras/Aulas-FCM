@@ -18,10 +18,13 @@ class EntidadesList(ListView):
 
     def get_queryset(self):
         nombre = self.request.GET.get('nombre')
-        if nombre:
-            return Entidades.objects.filter(nombre__icontains=nombre)
-        else:
-            return Entidades.objects.all()
+        try:
+            if nombre:
+                return Entidades.objects.filter(nombre__icontains=nombre)
+            else:
+                return Entidades.objects.all()
+        except Exception as e:
+            raise Exception(f'Error al recuperar las Entidades: {e}')
 
 class EntidadesCreate(SuccessMessageMixin, CreateView):
     form_class = EntidadesForm

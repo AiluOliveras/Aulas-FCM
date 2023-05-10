@@ -37,18 +37,27 @@ class CalendarView(generic.ListView):
 
         #Agrego elementos a la request para motrar en la view
         edificio= self.request.GET.get('edificio',None) #VALIDAR SI MANDA NONE
-        if (edificio):
-            context['aulas'] = Aulas.objects.filter(edificio_id=edificio) #retorno aulas de ese edif
-        else:
-            context['aulas'] = Aulas.objects.all()[:6] #retorno primeras 6 aulas
-        
+        try:
+            if (edificio):
+                context['aulas'] = Aulas.objects.filter(edificio_id=edificio) #retorno aulas de ese edif
+            else:
+                context['aulas'] = Aulas.objects.all()[:6] #retorno primeras 6 aulas
+        except Exception as e:
+            raise Exception(f'Error al recuperar las Aulas: {e}')
+
         if (aula):
-            context['aula']= Aulas.objects.get(id=aula) #retorno aula elegida
+            try:
+                context['aula']= Aulas.objects.get(id=aula) #retorno aula elegida
+            except Exception as e:
+                raise Exception(f'Error al recuperar el Aula elegida: {e}')
         
         context['edificios'] = Edificios.objects.all() #retorno edificios
 
         if (edificio):
-            context['edificio']= Edificios.objects.get(id=edificio) #retorno edificio elegido
+            try:
+                context['edificio']= Edificios.objects.get(id=edificio) #retorno edificio elegido
+            except Exception as e:
+                raise Exception(f'Error al recuperar el Edificio elegido: {e}')
 
         #Mes anterior y siguiente
         d = get_date(self.request.GET.get('month', None))
@@ -97,7 +106,7 @@ def next_month(d):
         d: Date sobre la cual quiere obtenerse su mes siguiente
 
     Returns:
-        Informacion sobre el mes siguiente que se muestra en el calendario.
+        Informacion sobre el mes siguiente que se muestra en el calendario. 
     
     """
 
