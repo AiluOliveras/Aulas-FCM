@@ -51,6 +51,20 @@ class EdificiosDelete(PermissionRequiredMixin, SuccessMessageMixin, DeleteView):
 
     
 def destroy_gestor_edificio(request, *args, **kwargs):
+    """ Da de baja a un usuario como gestor de un edificio.
+
+    Args:
+        edificio: FK con tabla edificios, es el edificio sobre el cual se lo quiere dar de baja como gestor
+        gestor: FK con tabla usuarios, es el usuario que quiere darse de baja como gestor
+
+    Returns:
+        Redirección hacia el template de gestores con un mensaje de operacion exitosa.
+    
+    Raises:
+        HttpResponse con mensaje de error en caso de ocurrir algun problema de indices.
+
+    """
+
     if request.user.is_superuser:
         from django.contrib.auth.models import User
         gestor= request.GET.get("gestor")
@@ -69,6 +83,20 @@ def destroy_gestor_edificio(request, *args, **kwargs):
     return HttpResponse("Hubo un error, por favor regrese a la página anterior.")
 
 def create_gestor_edificio(request, *args, **kwargs):
+    """ Da de alta a un usuario como gestor de un edificio.
+
+    Args:
+        edificio: FK con tabla edificios, es el edificio sobre el cual se lo quiere dar de alta como gestor
+        gestor: FK con tabla usuarios, es el usuario que quiere darse de alta como gestor
+
+    Returns:
+        Redirección hacia el template de gestores con un mensaje de operacion exitosa.
+    
+    Raises:
+        HttpResponse con mensaje de error en caso de ocurrir algun problema de indices.
+
+    """
+
     if request.user.is_superuser:
         from django.contrib.auth.models import User
         gestor= request.GET.get("gestor")
