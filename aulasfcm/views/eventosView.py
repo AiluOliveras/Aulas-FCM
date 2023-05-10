@@ -487,5 +487,5 @@ class HorariosLibresList(ListView):
         fecha_ini = request.POST.get('fecha_inicio', None)
         fecha_fi = request.POST.get('fecha_fin', None)
 
-        #return HttpResponseRedirect('/eventos/horarios_libres?fecha_inicio='+str(fecha_ini)+'&fecha_fin='+str(fecha_fi)+'&aula='+str(aula_id))
+        #return HttpResponseRedirect('/eventos/horarios_libres?fecha_inicio='+str(fecha_ini)+'&fecha_fin='+str(fecha_fi)+'&aula='+str(aula_id)) Antes
         return HttpResponseRedirect(f'/eventos/horarios_libres?fecha_inicio={str(fecha_ini)}&fecha_fin={str(fecha_fi)}&aula={str(aula_id)}')
