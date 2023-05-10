@@ -39,12 +39,43 @@ class EventCreate(CreateView):
         return HttpResponseRedirect(self.get_success_url())
 
     def next_weekday(self, d, weekday):
+        """ Calcula el siguiente weekday (por ejemplo, el siguiente lunes o martes de una fecha).
+
+        Args:
+            d: Date dia desde el cual se quiere obtener el siguiente weekday
+            weekday: Integer dia a obtener
+
+        Returns:
+            Fecha del proximo weekday.
+
+        """
+
         days_ahead = weekday - d.weekday()
         if days_ahead <= 0: # Target day already happened this week
             days_ahead += 7
         return d + datetime.timedelta(days_ahead)
 
     def form_invalid(self, form):
+        """ Crea el alta de un evento con un form personalizado.
+
+        Args:
+            aula_id: Integer ID del aula de la cual se quieren conocer sus horarios libres
+            fecha_inicio: Date fecha inicio del rango de creacion del evento
+            fecha_fin: Date fecha fin del rango de creacion del evento
+            hora_inicio: Date (horario) de inicio del evento
+            hora_fin: Date (horario) de fin del evento
+            aula: FK con la tabla aula, es el aula sobre la cual se realiza la reserva
+            dias: Array de dias de la semana elegidos
+            descripcion: String descripcion de la reserva
+            entidades: FK con la tabla entidades, es la entidad que realiza la reserva
+
+        Returns:
+            Redirección hacia el template de creacion con un mensaje de operacion exitosa.
+
+        Raises:
+            Redirects con mensajes de error por colision o error por falta de seleccion de almenos un dia de la semana.
+
+        """
 
         # tomo data del form
 
@@ -205,6 +236,19 @@ class EventosList(ListView):
         return query
 
     def post(self, request, *args, **kwargs):
+        """ Retorna un listado de reservas.
+
+        Args:
+            aula_id: Integer ID del aula de la cual se quieren conocer sus horarios libres
+            entidad_id: Integer ID de la entidad sobre la cual se quieren conocer sus reservas
+            fecha_ini: Date fecha inicio del rango en el que se quieren buscar horarios libres
+            fecha_fi: Date fecha fin del rango en el que se quieren buscar horarios libres
+
+        Returns:
+            Redirección hacia el template de búsqueda con los resultados de la consulta.
+
+        """
+        
         aula_id = request.POST.get('aula', None)
         entidad_id = request.POST.get('entidad', None)
         fecha_ini = request.POST.get('fecha_inicio', None)
@@ -219,6 +263,16 @@ class EventoDelete(SuccessMessageMixin, DeleteView):
     #permission_required = 'delete_event'
 
     def get(self,aux,pk):
+        """ Borra el evento seleccionado (unicamente).
+
+        Args:
+            pk: Integer ID del evento a eliminar
+
+        Returns:
+            Redirección a la url exitosa junto con un mensaje de resultado de la operacion.
+        
+        """
+
         evento= Event.objects.get(id=pk)
 
         if (evento): #si existe
@@ -249,6 +303,16 @@ class EventosDelete(SuccessMessageMixin, DeleteView):
     fields = "__all__"
 
     def get(self,aux,pk):
+        """ Borra el evento seleccionado y todos sus relacionados.
+
+        Args:
+            pk: Integer ID del evento a eliminar
+
+        Returns:
+            Redirección a la url exitosa junto con un mensaje de resultado de la operacion.
+
+        """
+
         evento= Event.objects.get(id=pk)
 
         if (evento): #si existe
@@ -319,6 +383,16 @@ class HorariosLibresList(ListView):
     ordering = ['id',]
 
     def date_front_format(self, adate):
+        """ Retorna fechas en un formato acorde a como se quieren mostrar en el frontend.
+
+        Args:
+            adate: Date fecha de la cual quiere cambiarse su formato
+
+        Returns:
+            Fecha con nuevo formato, en espanol.
+
+        """
+
         x=["Lunes","Martes","Miércoles","Jueves","Viernes","Sábado","Domingo"]
         return adate.strftime(x[adate.weekday()]+' '+'%d/%m/%Y, %I:%M %P.')
 
@@ -397,6 +471,18 @@ class HorariosLibresList(ListView):
         return context
 
     def post(self, request, *args, **kwargs):
+        """ Retorna un listado de horarios libres.
+
+        Args:
+            aula_id: Integer ID del aula de la cual se quieren conocer sus horarios libres
+            fecha_ini: Date fecha inicio del rango en el que se quieren buscar horarios libres
+            fecha_fi: Date fecha fin del rango en el que se quieren buscar horarios libres
+
+        Returns:
+            Redirección hacia el template de búsqueda con los resultados de la consulta.
+
+        """
+
         aula_id = request.POST.get('aula', None)
         fecha_ini = request.POST.get('fecha_inicio', None)
         fecha_fi = request.POST.get('fecha_fin', None)
