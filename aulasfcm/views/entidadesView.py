@@ -45,7 +45,7 @@ class EntidadesUpdate(PermissionRequiredMixin, SuccessMessageMixin, UpdateView):
 class EntidadesDelete(PermissionRequiredMixin, SuccessMessageMixin, DeleteView):
     model = Entidades
     form = Entidades
-    fields = "__all__"
+    fields = '__all__'
     permission_required = 'delete_entidades'
 
     def get_success_url(self):

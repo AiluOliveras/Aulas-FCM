@@ -41,7 +41,7 @@ class EdificiosUpdate(PermissionRequiredMixin, SuccessMessageMixin, UpdateView):
 class EdificiosDelete(PermissionRequiredMixin, SuccessMessageMixin, DeleteView):
     model = Edificios
     form = Edificios
-    fields = "__all__"
+    fields = '__all__'
     permission_required = 'delete_edificios'
 
     def get_success_url(self):
@@ -67,8 +67,8 @@ def destroy_gestor_edificio(request, *args, **kwargs):
 
     if request.user.is_superuser:
         from django.contrib.auth.models import User
-        gestor= request.GET.get("gestor")
-        edificio= request.GET.get("edificio")
+        gestor= request.GET.get('gestor')
+        edificio= request.GET.get('edificio')
 
         if edificio and gestor:
 
@@ -80,7 +80,7 @@ def destroy_gestor_edificio(request, *args, **kwargs):
             messages.success(request,('Gestor dado de baja exitosamente!'))
             return HttpResponseRedirect(request.META.get('HTTP_REFERER')) #recargo pag de gestores base
 
-    return HttpResponse("Hubo un error, por favor regrese a la página anterior.")
+    return HttpResponse('Hubo un error, por favor regrese a la página anterior.')
 
 def create_gestor_edificio(request, *args, **kwargs):
     """ Da de alta a un usuario como gestor de un edificio.
@@ -99,8 +99,8 @@ def create_gestor_edificio(request, *args, **kwargs):
 
     if request.user.is_superuser:
         from django.contrib.auth.models import User
-        gestor= request.GET.get("gestor")
-        edificio= request.GET.get("edificio")
+        gestor= request.GET.get('gestor')
+        edificio= request.GET.get('edificio')
 
         if edificio and gestor:
             #checkear que no exista ya la unión
@@ -114,4 +114,4 @@ def create_gestor_edificio(request, *args, **kwargs):
             #return HttpResponseRedirect('/edificios/gestores/?edificio='+edificio) #recargo pag de gestores base Ants
             return HttpResponseRedirect(f'/edificios/gestores/?edificio={edificio}') #recargo pag de gestores base
     
-    return HttpResponse("Hubo un error, por favor regrese a la página anterior.")
+    return HttpResponse('Hubo un error, por favor regrese a la página anterior.')

@@ -17,7 +17,7 @@ class GestoresList(ListView):
     ordering = ['username']
 
     def get_queryset(self):
-        edificio= self.request.GET.get("edificio")
+        edificio= self.request.GET.get('edificio')
         if edificio:
             edificio = Edificios.objects.get(id=edificio)
             queryset = edificio.gestores.all() # Tomo los gestores de determinado edificio
@@ -26,7 +26,7 @@ class GestoresList(ListView):
 
     def get_context_data(self, **kwargs):
         context = super(GestoresList, self).get_context_data(**kwargs) # GET de la data default del contexto
-        edificio= self.request.GET.get("edificio")
+        edificio= self.request.GET.get('edificio')
 
         context['edificio_obj'] = Edificios.objects.get(id=edificio) # Agrego edificio seleccionado al contexto
 

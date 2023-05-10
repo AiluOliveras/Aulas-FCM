@@ -93,7 +93,7 @@ class EventCreate(CreateView):
         hora_fin=datetime.datetime.strptime(hora_fin,"%H:%M")
 
         # opero con los checkbox de dias
-        dias=["lunes","martes","miercoles","jueves","viernes","sabado","domingo"]
+        dias=['lunes','martes','miercoles','jueves','viernes','sabado','domingo']
         dias_elegidos=[] #0=lunes, 1=martes ...
         for x,d in enumerate(dias):
             try:
@@ -138,7 +138,8 @@ class EventCreate(CreateView):
 
                 # checkeo colision de horario
                 if (colisiones_l.count() >0):
-                    messages.error(self.request,'No se pudo dar de alta el evento ya que colisiona con otro: '+(colisiones_l.first().entidad.nombre))
+                    #messages.error(self.request,'No se pudo dar de alta el evento ya que colisiona con otro: '+(colisiones_l.first().entidad.nombre)) Antes
+                    messages.error(self.request,f'No se pudo dar de alta el evento ya que colisiona con otro: {(colisiones_l.first().entidad.nombre)}')
                     return HttpResponseRedirect('/eventos/crear')
 
                 fecha_base += datetime.timedelta(weeks=1) #siguiente lunes
@@ -192,17 +193,17 @@ class EventosList(ListView):
         context['aulas'] = Aulas.objects.all()
         context['entidades'] = Entidades.objects.all()
 
-        aula= self.request.GET.get("aula")
+        aula= self.request.GET.get('aula')
         if aula:
             #print(aula)
             context['aula_selected'] = Aulas.objects.get(id=aula)
 
-        ent= self.request.GET.get("entidad")
+        ent= self.request.GET.get('entidad')
         if ent:
             context['entidad_selected'] = Entidades.objects.get(id=ent)
 
-        fecha_ini= self.request.GET.get("fecha_inicio")
-        fecha_fi= self.request.GET.get("fecha_fin")
+        fecha_ini= self.request.GET.get('fecha_inicio')
+        fecha_fi= self.request.GET.get('fecha_fin')
         if fecha_ini and fecha_fi:
             context['f_inicio'] = fecha_ini
             context['f_fin'] = fecha_fi
@@ -259,7 +260,7 @@ class EventosList(ListView):
 
 class EventoDelete(SuccessMessageMixin, DeleteView):
     model = Event
-    fields = "__all__"
+    fields = '__all__'
     #permission_required = 'delete_event'
 
     def get(self,aux,pk):
@@ -300,7 +301,7 @@ class EventoDelete(SuccessMessageMixin, DeleteView):
 
 class EventosDelete(SuccessMessageMixin, DeleteView):
     model = Event
-    fields = "__all__"
+    fields = '__all__'
 
     def get(self,aux,pk):
         """ Borra el evento seleccionado y todos sus relacionados.
@@ -393,7 +394,7 @@ class HorariosLibresList(ListView):
 
         """
 
-        x=["Lunes","Martes","Miércoles","Jueves","Viernes","Sábado","Domingo"]
+        x=['Lunes','Martes','Miércoles','Jueves','Viernes','Sábado','Domingo']
         return adate.strftime(x[adate.weekday()]+' '+'%d/%m/%Y, %I:%M %P.')
 
     def get_context_data(self, **kwargs):
@@ -401,12 +402,12 @@ class HorariosLibresList(ListView):
         #Agrego elementos a la request para motrar en la view
         context['aulas'] = Aulas.objects.all()
 
-        aula= self.request.GET.get("aula")
+        aula= self.request.GET.get('aula')
         if aula:
             context['aula_selected'] = Aulas.objects.get(id=aula)
 
-        fecha_ini= self.request.GET.get("fecha_inicio")
-        fecha_fi= self.request.GET.get("fecha_fin")
+        fecha_ini= self.request.GET.get('fecha_inicio')
+        fecha_fi= self.request.GET.get('fecha_fin')
         if fecha_ini and fecha_fi:
             context['f_inicio'] = fecha_ini
             context['f_fin'] = fecha_fi

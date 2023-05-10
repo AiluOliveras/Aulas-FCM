@@ -60,11 +60,11 @@ class UsuariosList(ListView):
     ordering = ['username']
 
     def get_queryset(self):
-        filtro_edificio= self.request.GET.get("filtro_edificio") #param para saber si es para filtrar users
+        filtro_edificio= self.request.GET.get('filtro_edificio') #param para saber si es para filtrar users
         username = self.request.GET.get('username')
         if filtro_edificio:
     
-            edificio= self.request.GET.get("edificio_id")
+            edificio= self.request.GET.get('edificio_id')
             edificio = Edificios.objects.get(id=edificio)
 
             #retorno users que no son gestores de este edificio
@@ -87,7 +87,7 @@ class UsuariosList(ListView):
         context = super(UsuariosList, self).get_context_data(**kwargs) # GET de la data default
         #context['usuarios'] = User.objects.all()# Agrego listado de edificios al contexto
         context['filtro_edificio'] = self.request.GET.get('filtro_edificio', 'None')
-        edificio= self.request.GET.get("edificio_id")
+        edificio= self.request.GET.get('edificio_id')
 
         context['edificio_obj'] = Edificios.objects.get(id=edificio) # Agrego edificio seleccionado al contexto
 

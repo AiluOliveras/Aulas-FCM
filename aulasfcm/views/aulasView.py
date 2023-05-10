@@ -49,7 +49,7 @@ class AulasUpdate(PermissionRequiredMixin, SuccessMessageMixin, UpdateView):
 class AulasDelete(PermissionRequiredMixin, SuccessMessageMixin, DeleteView):
     model = Aulas
     form = Aulas
-    fields = "__all__"
+    fields = '__all__'
     permission_required = 'delete_aulas'
 
     def get_success_url(self):

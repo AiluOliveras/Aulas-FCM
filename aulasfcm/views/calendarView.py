@@ -29,14 +29,14 @@ class CalendarView(generic.ListView):
         cal = Calendar(d.year, d.month)
 
         # Saco params del header p/ filtros en calendario
-        aula= self.request.GET.get("aula") #VALIDAR SI MANDA NONE
+        aula= self.request.GET.get('aula') #VALIDAR SI MANDA NONE
 
         # Call the formatmonth method, which returns our calendar as a table
         html_cal = cal.formatmonth(withyear=True, aula=aula) # Cabecera + formato texto de eventos
         context['calendar'] = mark_safe(html_cal)
 
         #Agrego elementos a la request para motrar en la view
-        edificio= self.request.GET.get("edificio",None) #VALIDAR SI MANDA NONE
+        edificio= self.request.GET.get('edificio',None) #VALIDAR SI MANDA NONE
         if (edificio):
             context['aulas'] = Aulas.objects.filter(edificio_id=edificio) #retorno aulas de ese edif
         else:
