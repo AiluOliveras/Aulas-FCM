@@ -22,7 +22,7 @@ class Calendar(HTMLCalendar):
         for event in events_per_day: # Caja del evento en el calendario
             d += f'<li data-toggle="popover" title="<b>{event.entidad.nombre}</b>" data-content="<b>Hora inicio:</b> {self.format_time_popover(event.start_time)}<br/> <b>Hora fin:</b> {self.format_time_popover(event.end_time)}</br> <b>Descripción:</b> {event.description}" data-html="true" style="list-style-type:none;border-radius: 3px;background: #96d4b6;margin-bottom:1px;cursor: pointer;"><b>{self.format_time_evento(event.start_time)}</b> {event.entidad.nombre} </li>'
         
-        if day != 0:
+        if day:
             if (act and day==datetime.now().date().day):
                 return f"<td style='vertical-align:top;background-color: #E0E0E0;'><span class='date'>{day}</span><ul style='padding: 0px 0px 0px 0px;'> {d} </ul></td>" # Texto del num. de día y eventos
             else:

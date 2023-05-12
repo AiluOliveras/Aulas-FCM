@@ -290,7 +290,7 @@ class EventoDelete(SuccessMessageMixin, DeleteView):
         evento= Event.objects.get(id=pk)
 
         if (evento): #si existe
-            if (evento.siguiente_id==None):
+            if (evento.siguiente_id is None):
                 #es el último o era un evento único
                 evento.delete()
             else:
@@ -330,7 +330,7 @@ class EventosDelete(SuccessMessageMixin, DeleteView):
         evento= Event.objects.get(id=pk)
 
         if (evento): #si existe
-            if (evento.siguiente_id==None):
+            if (evento.siguiente_id is None):
 
                 evento_previo=None
                 try:
@@ -441,10 +441,10 @@ class HorariosLibresList(ListView):
             evento_ant=None
             data=[]
             libres=[]
-            if eventos_list != None:
+            if eventos_list is not None:
                 #hay eventos
                 for evento in eventos_list:
-                    if evento_ant != None:
+                    if evento_ant is not None:
                         #calculo minutos entre el evento anterior y este
                         aux= evento.start_time- evento_ant.end_time
                         minutes = aux.total_seconds() / 60
@@ -461,7 +461,7 @@ class HorariosLibresList(ListView):
                         data.append(str(self.date_front_format(evento.start_time)))
                     
                     evento_ant=evento
-                    if (data!=[]):
+                    if (data):
                         libres.append(data)
                     data=[]
                 
